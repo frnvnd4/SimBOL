@@ -1,7 +1,7 @@
 import sbol3
 import xml.etree.ElementTree as ET
 from collections import defaultdict, deque
-from mappings import NS, inverse_interaction_mapping, inverse_role_mapping, inverse_component_map, inverse_ed_mapping
+from .mappings import NS, inverse_interaction_mapping, inverse_role_mapping, inverse_component_map, inverse_ed_mapping
 
 def get_label_from_uri(uri):
   label = (
