@@ -804,8 +804,8 @@ def generate_gro_file(simulation_params, gene_definitions_list, qs_actions_map_d
 
   # --- Global Simulation Parameters ---
   gro_content_lines.append("// Global Simulation Parameters")
-  gro_content_lines.append(f'set ( "dt", {simulation_params.get("dt", 0.1)} ); // Timestep in minutes')
-  gro_content_lines.append(f'set ( "population_max", {simulation_params.get("population_max", 20000)} ); // Maximum cell population\n')
+  gro_content_lines.append(f'set ("dt", {simulation_params.get("dt", 0.1)} ); // Timestep in minutes')
+  gro_content_lines.append(f'set ("population_max", {simulation_params.get("population_max", 20000)} ); // Maximum cell population\n')
 
   # --- Signal Definitions and Setup ---
   if signal_definitions_list:
@@ -978,7 +978,7 @@ def generate_gro_file(simulation_params, gene_definitions_list, qs_actions_map_d
   # --- Main Program: Initial Cell and Signal Setup ---
   main_program_block = ["program main() := {"]
 
-  main_program_block.append(f'set ("ecoli_growth_rate", {simulation_params.get("growth_rate", 0.0346)});')
+  main_program_block.append(f'set("ecoli_growth_rate", {simulation_params.get("growth_rate", 0.0346)});')
   if simulation_params.get("signal_parameters", {}) or simulation_params.get("initial_ecoli_populations"):
       main_program_block.append("")
     
