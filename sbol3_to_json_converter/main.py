@@ -1,7 +1,7 @@
 import json
 import xml.etree.ElementTree as ET
-from rdf_parser import parse_sbol
-from clean_json import clean_json
+from .rdf_parser import parse_sbol
+from .clean_json import clean_json
 
 sbol_file = "../../rep_loica_model.xml"
 output_data = parse_sbol(sbol_file)
