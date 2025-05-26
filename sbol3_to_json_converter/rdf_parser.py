@@ -1,8 +1,8 @@
 import xml.etree.ElementTree as ET
-from utils import get_label_from_uri, resolve_component_name
-from hierarchy import restructure_hierarchy
-from constitutive_detection import detect_constitutive_operons
-from mappings import NS
+from .utils import get_label_from_uri, resolve_component_name
+from .hierarchy import restructure_hierarchy
+from .constitutive_detection import detect_constitutive_operons
+from .mappings import NS
 
 def parse_sbol(file):
   tree = ET.parse(file)
