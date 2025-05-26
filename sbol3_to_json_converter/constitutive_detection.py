@@ -1,5 +1,5 @@
-from utils import get_display_id_from_name
-from mappings import NS
+from .utils import get_display_id_from_name
+from .mappings import NS
 
 def is_constitutive(promoter_id, root, display_id_to_uri):
   promoter_uri = display_id_to_uri.get(promoter_id, None) 
