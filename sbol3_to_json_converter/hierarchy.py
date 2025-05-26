@@ -1,7 +1,7 @@
-from utils import sort_components_by_order, extract_unique_components, resolve_component_name
+from .utils import sort_components_by_order, extract_unique_components, resolve_component_name
 from collections import defaultdict, deque
 from lxml import etree
-from mappings import NS
+from .mappings import NS
 
 def build_region_hierarchy(root, components):
     regions = {}
