@@ -1,6 +1,6 @@
 import json
-from rdf_parser import parse_sbol
-from clean_json import clean_json
+from .rdf_parser import parse_sbol
+from .clean_json import clean_json
 from google.colab import files
 
 def process_sbol(sbol_file, nombre_base):
