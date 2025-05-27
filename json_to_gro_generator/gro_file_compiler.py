@@ -500,9 +500,6 @@ def extract_biochemical_reactions(interactions_list, ed_definitions_list, hierar
           "enzyme": modifiers_details[0],
           "sbol_interaction_id": interaction_item.get("displayId", f"biochem_{reactants_details[0]['original_name']}_{products_details[0]['original_name']}")
         })
-      else:
-        #print(f"DEBUG: Biochemical reaction not matching S1->S2 pattern: {interaction_item.get('displayId')}")
-        #print(f"DEBUG: Reactants: {reactants_details}, Products: {products_details}, Modifiers: {modifiers_details}")
   return identified_reactions
 
 def extract_genes_and_qs_actions(interactions_list, hierarchy_map, components_list, ed_definitions_list):
