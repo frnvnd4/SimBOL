@@ -1044,9 +1044,6 @@ def generate_gro_file(simulation_params, gene_definitions_list, qs_actions_map_d
   gro_content_lines.append("")
 
   # --- Write to .gro File ---
-  try:
-    with open(output_file_path, 'w', encoding='utf-8') as gro_file_handle:
-      gro_file_handle.write("\n".join(gro_content_lines))
-    #print(f".gro file generated successfully: {output_file_path}")
-  except IOError as e:
-    #print(f"Error writing .gro file: {e}")
+  with open(output_file_path, 'w', encoding='utf-8') as gro_file_handle:
+    gro_file_handle.write("\n".join(gro_content_lines))
+
