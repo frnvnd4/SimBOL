@@ -190,10 +190,10 @@ def get_template_for_participant(participant_id, ed_definitions_list, all_intera
         found_cds_id = find_cds_in_hierarchy(template_id, hierarchy_map, component_lookup)
         if found_cds_id:
           return found_cds_id
-        print(f"WARNING [get_template_for_participant]: Could not find CDS for template '{template_id}' of product '{protein_product_name_to_find}'. Returning template name.")
+        #print(f"WARNING [get_template_for_participant]: Could not find CDS for template '{template_id}' of product '{protein_product_name_to_find}'. Returning template name.")
         return template_id 
 
-  print(f"WARNING [get_template_for_participant]: Could not resolve '{participant_id}' to chemical or protein CDS. Returning original name.")
+  #print(f"WARNING [get_template_for_participant]: Could not resolve '{participant_id}' to chemical or protein CDS. Returning original name.")
   return participant_id
 
 def is_promoter_under_control_of_affected_component(affected_component_id, promoter_id_to_check, full_hierarchy_data):
@@ -337,7 +337,7 @@ def get_reactant_gro_name_for_ncb(reactant_original_name, ed_definitions_list, c
   elif ed_entry_data and ed_entry_data.get("type") == "Protein": # It's a protein from ED without direct CDS in components
     return reactant_original_name # Use the ED protein name
 
-  print(f"WARNING: Could not resolve reactant '{reactant_original_name}' to QS signal or CDS for NCB.")
+  #print(f"WARNING: Could not resolve reactant '{reactant_original_name}' to QS signal or CDS for NCB.")
   return reactant_original_name 
 
 def extract_ncb_production_genes_and_actions(interactions_list, ed_definitions_list, components_list,
@@ -501,8 +501,8 @@ def extract_biochemical_reactions(interactions_list, ed_definitions_list, hierar
           "sbol_interaction_id": interaction_item.get("displayId", f"biochem_{reactants_details[0]['original_name']}_{products_details[0]['original_name']}")
         })
       else:
-        print(f"DEBUG: Biochemical reaction not matching S1->S2 pattern: {interaction_item.get('displayId')}")
-        print(f"DEBUG: Reactants: {reactants_details}, Products: {products_details}, Modifiers: {modifiers_details}")
+        #print(f"DEBUG: Biochemical reaction not matching S1->S2 pattern: {interaction_item.get('displayId')}")
+        #print(f"DEBUG: Reactants: {reactants_details}, Products: {products_details}, Modifiers: {modifiers_details}")
   return identified_reactions
 
 def extract_genes_and_qs_actions(interactions_list, hierarchy_map, components_list, ed_definitions_list):
@@ -978,7 +978,7 @@ def generate_gro_file(simulation_params, gene_definitions_list, qs_actions_map_d
   # --- Main Program: Initial Cell and Signal Setup ---
   main_program_block = ["program main() := {"]
 
-  main_program_block.append(f'set("ecoli_growth_rate", {simulation_params.get("growth_rate", 0.0346)});')
+  main_program_block.append(f'  set("ecoli_growth_rate", {simulation_params.get("growth_rate", 0.0346)});')
   if simulation_params.get("signal_parameters", {}) or simulation_params.get("initial_ecoli_populations"):
       main_program_block.append("")
     
@@ -1022,7 +1022,7 @@ def generate_gro_file(simulation_params, gene_definitions_list, qs_actions_map_d
   # Initial E. coli cell populations
   initial_ecoli_defs_list = simulation_params.get("initial_ecoli_populations", [])
   if not initial_ecoli_defs_list:
-    print("Warning: No initial E.coli populations defined by user. Creating a default population.")
+    #print("Warning: No initial E.coli populations defined by user. Creating a default population.")
     default_cell_count = 100; default_pos_x = 0.0; default_pos_y = 0.0; default_pop_radius = 100.0
     default_plasmids_for_ecoli_str = "{}" 
     if plasmid_definitions_map:
@@ -1050,6 +1050,6 @@ def generate_gro_file(simulation_params, gene_definitions_list, qs_actions_map_d
   try:
     with open(output_file_path, 'w', encoding='utf-8') as gro_file_handle:
       gro_file_handle.write("\n".join(gro_content_lines))
-    print(f".gro file generated successfully: {output_file_path}")
+    #print(f".gro file generated successfully: {output_file_path}")
   except IOError as e:
-    print(f"Error writing .gro file: {e}")
+    #print(f"Error writing .gro file: {e}")
