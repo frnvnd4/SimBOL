@@ -15,7 +15,6 @@ def normalize_signal_name(name):
   Returns:
     str: The normalized signal name.
   """
-  # Removes spaces and hyphens to create a valid GRO identifier
   return re.sub(r'[\s\-_]', '', name)
 
 def flatten_components(component_list, hierarchy_dict):
@@ -136,7 +135,6 @@ def find_cds_in_hierarchy(component_name_to_search, full_hierarchy_data, compone
       break
 
   if starting_search_structure is not None:
-    # Pass a dictionary to traverse_hierarchy_for_cds, with component_name_to_search as the key
     return traverse_hierarchy_for_cds({component_name_to_search: starting_search_structure})
   return None
 
@@ -580,9 +578,8 @@ def extract_genes_and_qs_actions(interactions_list, hierarchy_map, components_li
 
   # --- Step 2: Create Gene Definitions for GRO based on hierarchy and processed regulatory info ---
   gene_counter = 0
-  for operon_data in hierarchy_map.values(): # Iterate through each operon/design in the hierarchy
+  for operon_data in hierarchy_map.values():
     raw_elements_in_operon = operon_data.get("components", [])
-    # Flatten the component list for this operon for easier processing
     flattened_elements_list = flatten_components(raw_elements_in_operon, hierarchy_map)
     is_operon_constitutive = operon_data.get("constitutive", False)
 
@@ -679,7 +676,6 @@ def extract_genes_and_qs_actions(interactions_list, hierarchy_map, components_li
             # Store the effective TF and its logic. Handle potential conflicts if multiple interactions define the same TF differently.
             if final_tf_gro_id not in effective_regulators_for_promoter:
               effective_regulators_for_promoter[final_tf_gro_id] = final_tf_logic
-            # else: Conflict detected, current implementation keeps the first logic found. Could be refined.
 
       # Finalize promoter logic and TFs based on effective regulators
       effective_regulators_list = list(effective_regulators_for_promoter.items())
@@ -799,12 +795,12 @@ def generate_gro_file(simulation_params, gene_definitions_list, qs_actions_map_d
   """
   gro_content_lines = ["include gro\n"] 
 
-  # --- Global Simulation Parameters ---
+  # Global Simulation Parameters 
   gro_content_lines.append("// Global Simulation Parameters")
   gro_content_lines.append(f'set ("dt", {simulation_params.get("dt", 0.1)} ); // Timestep in minutes')
   gro_content_lines.append(f'set ("population_max", {simulation_params.get("population_max", 20000)} ); // Maximum cell population\n')
 
-  # --- Signal Definitions and Setup ---
+  # Signal Definitions and Setup 
   if signal_definitions_list:
     gro_content_lines.append("// Signal Diffusion Parameters")
     gro_content_lines.append('set("signals", 1.0); // Enable signal module')
@@ -815,7 +811,7 @@ def generate_gro_file(simulation_params, gene_definitions_list, qs_actions_map_d
     gro_content_lines.extend(signal_definitions_list)
     gro_content_lines.append("") 
 
-  # --- Gene Definitions ---
+  # Gene Definitions
   gro_content_lines.append("// Gene Definitions")
   for gene_data_item in gene_definitions_list:
     protein_list_str = ", ".join(gene_data_item["proteins"]) 
@@ -845,7 +841,6 @@ def generate_gro_file(simulation_params, gene_definitions_list, qs_actions_map_d
       to_off_noise = float(gene_timing_params.get("toOff", default_timings["toOff"]))
       noise_t = float(gene_timing_params.get("noise_time", default_timings["noise_time"]))
 
-      # Ensure parameters are within valid ranges
       act_time = max(0.0, act_time); act_var = max(0.0, act_var)
       deg_time = max(0.0, deg_time) 
       deg_var = max(0.0, deg_var)
@@ -866,7 +861,7 @@ def generate_gro_file(simulation_params, gene_definitions_list, qs_actions_map_d
       f']);\n'
     ])
 
-  # --- Plasmid Definitions ---
+  #  Plasmid Definitions
   plasmid_definitions_map = simulation_params.get("plasmid_configuration", {}).get("defined_plasmids", {})
   if plasmid_definitions_map:
     gro_content_lines.append("// Plasmid Definitions")
@@ -879,7 +874,7 @@ def generate_gro_file(simulation_params, gene_definitions_list, qs_actions_map_d
         gro_content_lines.append(f'plasmids_genes([ {", ".join(plasmid_entries_list)} ]);\n')
 
 
-  # --- Quorum Sensing Signal Detection Actions (s_get_QS) ---
+  # Quorum Sensing Signal Detection Actions (s_get_QS)
   if qs_actions_map_data:
     qs_sensing_action_strings = generate_qs_signal_sensing_actions(qs_actions_map_data, simulation_params.get("signal_parameters", {}))
     if qs_sensing_action_strings:
@@ -887,7 +882,7 @@ def generate_gro_file(simulation_params, gene_definitions_list, qs_actions_map_d
       gro_content_lines.extend(qs_sensing_action_strings)
       gro_content_lines.append("")
 
-  # --- Non-Covalent Binding Product Emission Actions ---
+  # Non-Covalent Binding Product Emission Actions
   ncb_ui_config_params = simulation_params.get("ncb_emission_parameters", {})
   ncb_action_details_from_extraction = simulation_params.get("info_for_ncb_emission_actions", [])
 
@@ -914,7 +909,7 @@ def generate_gro_file(simulation_params, gene_definitions_list, qs_actions_map_d
       gro_content_lines.extend(ncb_emission_action_strings)
       gro_content_lines.append("")
 
-  # --- Biochemical Signal Conversion Actions (S1 + E -> S2) ---
+  # Biochemical Signal Conversion Actions (S1 + E -> S2) 
   biochem_ui_config_params = simulation_params.get("biochemical_conversion_parameters", {})
   if biochemical_reactions_data_list and biochem_ui_config_params:
     biochem_action_strings = []
@@ -933,7 +928,7 @@ def generate_gro_file(simulation_params, gene_definitions_list, qs_actions_map_d
           absorption_behavior = reaction_ui_params.get("absorption_type", "area")
           emission_behavior = reaction_ui_params.get("emission_type", "area")
 
-          if conversion_rate > 0.0: # Only add actions if rate is positive
+          if conversion_rate > 0.0: 
             # Absorb S1
             biochem_action_strings.append(f'action({{"{enzyme_gro_id_val}"}}, "s_absorb_signal", {{tostring({reactant_signal_gro_id_val}), "{conversion_rate}", "{absorption_behavior}"}});')
             # Emit S2
@@ -947,7 +942,7 @@ def generate_gro_file(simulation_params, gene_definitions_list, qs_actions_map_d
       gro_content_lines.extend(biochem_action_strings)
       gro_content_lines.append("")
 
-  # --- Cell Painting Actions ---
+  # Cell Painting Actions
   all_gene_protein_ids = {p_id.strip('"') for gene in gene_definitions_list for p_id in gene["proteins"]}
   valid_protein_paint_config = {p_id: color for p_id, color in protein_paint_actions_map.items() if p_id in all_gene_protein_ids}
 
@@ -958,7 +953,7 @@ def generate_gro_file(simulation_params, gene_definitions_list, qs_actions_map_d
       gro_content_lines.extend(paint_action_strings)
       gro_content_lines.append("")
 
-  # --- Bacterial Conjugation Actions ---
+  # Bacterial Conjugation Actions
   conjugation_params = simulation_params.get("conjugation_parameters", {})
   if conjugation_params.get("enabled", False):
     conjugation_settings_map = conjugation_params.get("settings", {})
@@ -970,9 +965,10 @@ def generate_gro_file(simulation_params, gene_definitions_list, qs_actions_map_d
           gro_content_lines.extend(conjugation_action_strings)
           gro_content_lines.append("")
 
-  # --- Program Definition ---
+  # Program Definition 
   gro_content_lines.append(f'program p() := {{\n  skip();\n}};\n')
-  # --- Main Program: Initial Cell and Signal Setup ---
+  
+  # Main Program: Initial Cell and Signal Setup
   main_program_block = ["program main() := {"]
 
   main_program_block.append(f'  set("ecoli_growth_rate", {simulation_params.get("growth_rate", 0.0346)});')
