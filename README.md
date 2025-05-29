@@ -17,7 +17,7 @@ The process works as follows: an initial design file is first transformed into a
 
 ![SimBOL FrameWork](./images/SimBOL_FW.png)
 
-### How It's Organized (Under the Hood)
+### How It's Organized
 
 The project is set up to be modular, which is just a fancy way of saying it's in logical pieces:
 
