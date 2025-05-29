@@ -36,7 +36,7 @@ Welcome to the User Manual for the SimBOL GRO Plugin. This guide provides detail
 
 ## 1. Introduction to the SimBOL-GRO Plugin
 
-SimBOL is a framework that translates SBOL3 designs into formats for various simulators. This manual specifically covers the **SimBOL-GRO Plugin**, which enables the generation of `.gro` files for the GRO simulator[cite: 975].
+SimBOL is a framework that translates SBOL3 designs into formats for various simulators. This manual specifically covers the **SimBOL-GRO Plugin**, which enables the generation of `.gro` files for the GRO simulator.
 
 The plugin leverages an intermediate, optimized JSON representation derived from your SBOL3 file. This JSON simplifies the complex SBOL3 data, making it easier to map to GRO's simulation constructs and allowing you to fine-tune simulation-specific parameters through an interactive user interface.
 
@@ -56,9 +56,9 @@ For the SimBOL-GRO plugin to correctly interpret your design and generate a func
 
 ### 3.1 Component Typing (`type` and `role`)
 
-* **Component `type`:** Every `Component` in your SBOL3 design (e.g., DNA, RNA, Protein, Simple Chemical) MUST have its `type` property clearly defined using appropriate ontology terms (e.g., from the Systems Biology Ontology - SBO)[cite: 265, 266, 267, 268, 271].
-* **Component `role`:** For DNA components that form transcriptional units, it is **essential** that their `role` properties are correctly specified using Sequence Ontology (SO) terms[cite: 284, 289, 295].
-    * The GRO plugin **requires at least a Promoter (`SO:0000167`) and one or more Coding Sequences (CDS) (`SO:0000316`)** to define a gene (operon) in the `.gro` file[cite: 1018, 1019, 1021].
+* **Component `type`:** Every `Component` in your SBOL3 design (e.g., DNA, RNA, Protein, Simple Chemical) MUST have its `type` property clearly defined using appropriate ontology terms (e.g., from the Systems Biology Ontology - SBO).
+* **Component `role`:** For DNA components that form transcriptional units, it is **essential** that their `role` properties are correctly specified using Sequence Ontology (SO) terms.
+    * The GRO plugin **requires at least a Promoter (`SO:0000167`) and one or more Coding Sequences (CDS) (`SO:0000316`)** to define a gene (operon) in the `.gro` file.
     * Other roles like RBS (`SO:0000139`) and Terminator (`SO:0000141`) are good practice for a complete SBOL3 design but are not explicitly parsed into distinct GRO elements by the current plugin beyond their inclusion in the overall gene structure.
 
 ### 3.2 Operon Definitions (Transcriptional Units)
@@ -67,7 +67,7 @@ The GRO simulator defines genes as transcriptional units. SimBOL attempts to map
 
 * **Preferred Method (Clear & Robust):**
     * Define each operon as a distinct SBOL3 `Component` (typically of `type` DNA).
-    * Within this "operon" `Component`, instantiate all its constituent genetic parts (e.g., promoter, RBS, CDSs, terminator) as `SubComponent` objects linked via the `hasFeature` property[cite: 304, 311].
+    * Within this "operon" `Component`, instantiate all its constituent genetic parts (e.g., promoter, RBS, CDSs, terminator) as `SubComponent` objects linked via the `hasFeature` property.
     * The order and relationship of these `SubComponent` instances within the parent operon `Component` define the transcriptional unit. This explicit hierarchical structure is the most reliable way for SimBOL to interpret your operons.
 
 * **Automatic Grouping (Fallback Behavior):**
@@ -77,16 +77,16 @@ The GRO simulator defines genes as transcriptional units. SimBOL attempts to map
 
 ### 3.3 Comprehensive Interaction Specification
 
-All molecular interactions relevant to the circuit's behavior MUST be present and correctly defined in the SBOL3 file, using appropriate SBO terms for interaction types and participant roles[cite: 454, 464]. This information is crucial for generating corresponding `action` statements in the `.gro` file.
+All molecular interactions relevant to the circuit's behavior MUST be present and correctly defined in the SBOL3 file, using appropriate SBO terms for interaction types and participant roles. This information is crucial for generating corresponding `action` statements in the `.gro` file.
 
 * **Genetic Production (`SBO:0000589`):**
-    * **Absolutely essential.** These interactions define which `Component` (acting as a template, typically a CDS) produces which protein `Component` (product)[cite: 461].
+    * **Absolutely essential.** These interactions define which `Component` (acting as a template, typically a CDS) produces which protein `Component` (product).
     * The GRO plugin uses this to:
         * Map proteins back to the CDS that encodes them (this CDS becomes the "protein name" in many GRO contexts).
         * Identify transcription factors and other proteins involved in regulation.
 * **Regulatory Interactions (e.g., `Control` SBO:0000168, `Inhibition` SBO:0000169, `Stimulation` SBO:0000170):**
     * These define how transcription factors (proteins, complexes) or chemical signals affect promoters (or associated DNA elements like operators).
-    * Clearly specify the `participant` with the `role` of `Modifier`, `Stimulator`, or `Inhibitor`, and the `participant` with the `role` of `Modified`, `Stimulated`, or `Inhibited` (which is typically the promoter `Feature` or an operator `Feature` linked to that promoter)[cite: 471].
+    * Clearly specify the `participant` with the `role` of `Modifier`, `Stimulator`, or `Inhibitor`, and the `participant` with the `role` of `Modified`, `Stimulated`, or `Inhibited` (which is typically the promoter `Feature` or an operator `Feature` linked to that promoter).
 * **Non-Covalent Binding (`SBO:0000177`):**
     * If the binding of two or more molecules (e.g., Protein + Simple Chemical) forms a complex that subsequently acts as a transcription factor or results in the emission of a new signal, this interaction is vital.
     * The GRO plugin uses this to:
@@ -95,22 +95,22 @@ All molecular interactions relevant to the circuit's behavior MUST be present an
 * **Biochemical Reaction (`SBO:0000176`):**
     * Used for enzymatic conversions, typically S1 (substrate) + E (enzyme) -> S2 (product).
     * The GRO plugin specifically looks for reactions where S1 and S2 are `Simple chemical` type Components, and E is a `Protein` type Component acting as a `Modifier`.
-    * This allows the generation of `s_absorb_signal` (for S1) and `s_emit_signal` (for S2) actions in GRO, triggered by the presence of the enzyme[cite: 461].
+    * This allows the generation of `s_absorb_signal` (for S1) and `s_emit_signal` (for S2) actions in GRO, triggered by the presence of the enzyme.
 * **Degradation (`SBO:0000179`):**
     * While SBOL3 defines a "Degradation" interaction type, **GRO does not have a direct `action` for one entity to actively degrade another** (e.g., `action({"ProteinX"}, "degrade", {"ProteinY"})`).
     * In GRO, degradation is primarily an *intrinsic property*:
-        * Proteins: Degradation is set by `prot_deg_times` in the `genes` definition[cite: 1039].
-        * Signals: Degradation is set by `kdeg` in the `s_signal` definition[cite: 998].
+        * Proteins: Degradation is set by `prot_deg_times` in the `genes` definition.
+        * Signals: Degradation is set by `kdeg` in the `s_signal` definition.
     * Your `extract_degradation_actions` function helps identify these SBOL interactions. However, the SimBOL-GRO plugin currently **does not translate these into specific GRO `action` statements**. This information could be used to manually inform the setting of intrinsic `prot_deg_times` or `kdeg` values, or to model complex indirect effects if active, conditional degradation is critical. (See Section 6 for more).
 
 ### 3.4 Identifiers (`displayId`, `name`)
 
-* Use consistent and meaningful `displayId` properties for your SBOL3 `Component` and `Feature` objects[cite: 212]. These are often used as the basis for names in the generated `.gro` file.
+* Use consistent and meaningful `displayId` properties for your SBOL3 `Component` and `Feature` objects. These are often used as the basis for names in the generated `.gro` file.
 * Be aware that `normalize_signal_name` is used for chemical signals to make them valid GRO identifiers (typically removing spaces and hyphens).
 
 ### 3.5 Hierarchy (Recommended)
 
-* While SimBOL's SBOL-to-JSON phase can flatten hierarchies, structuring your SBOL3 designs hierarchically (e.g., an "Operon" `Component` containing "Promoter" and "CDS" `SubComponent`s) greatly aids in unambiguous interpretation and is considered good design practice[cite: 43].
+* While SimBOL's SBOL-to-JSON phase can flatten hierarchies, structuring your SBOL3 designs hierarchically (e.g., an "Operon" `Component` containing "Promoter" and "CDS" `SubComponent`s) greatly aids in unambiguous interpretation and is considered good design practice.
 
 ## 4. Using the SimBOL-GRO Plugin via Google Colab
 
@@ -144,40 +144,40 @@ The primary way to use the SimBOL-GRO plugin is through the provided Google Cola
 * **UI Sections:**
 
     * #### 4.4.1 Global Simulation Parameters
-        * **Timestep (dt, minutes):** The duration of each simulation timestep[cite: 983].
-        * **Population max:** The maximum number of cells allowed in the simulation[cite: 983].
+        * **Timestep (dt, minutes):** The duration of each simulation timestep.
+        * **Population max:** The maximum number of cells allowed in the simulation.
         * **Cell Doubling Time (minutes):** Used to calculate the default growth rate.
 
     * #### 4.4.2 Gene Parameters
         * For each "gene" (transcriptional unit identified by SimBOL, e.g., "Operon\_1", "Operon\_2"):
             * **Produces:** Lists the protein(s) (CDS IDs from SBOL3) produced by this gene.
             * **Timing (Activation/Degradation, minutes):**
-                * `Act. Time`: Average time for protein activation/expression[cite: 1035].
-                * `Act. Var.`: Variability (standard deviation) for activation time[cite: 1035].
-                * `Deg. Time`: Average time for protein degradation[cite: 1039].
-                * `Deg. Var.`: Variability for degradation time[cite: 1039].
+                * `Act. Time`: Average time for protein activation/expression.
+                * `Act. Var.`: Variability (standard deviation) for activation time.
+                * `Deg. Time`: Average time for protein degradation.
+                * `Deg. Var.`: Variability for degradation time.
             * **Noise Parameters:**
-                * `Noise Act. Time`: Timespan over which noise probabilities apply[cite: 1014, 1032].
-                * `P(noise ON)` (`toOn`): Probability of the promoter being constitutively ON due to noise[cite: 1014, 1032].
-                * `P(noise OFF)` (`toOff`): Probability of the promoter being constitutively OFF due to noise[cite: 1014, 1032].
+                * `Noise Act. Time`: Timespan over which noise probabilities apply.
+                * `P(noise ON)` (`toOn`): Probability of the promoter being constitutively ON due to noise.
+                * `P(noise OFF)` (`toOff`): Probability of the promoter being constitutively OFF due to noise.
 
     * #### 4.4.3 Plasmid Definition
         * **Add Plasmid:** Allows you to define new plasmids by name.
-        * **Assign Genes:** For each defined plasmid, select (using checkboxes) which of the above "genes" (Operon\_1, Operon\_2, etc.) it contains[cite: 1042, 1045].
+        * **Assign Genes:** For each defined plasmid, select (using checkboxes) which of the above "genes" (Operon\_1, Operon\_2, etc.) it contains.
         * **Warning:** As discovered, ensure that plasmid definitions are unique if they have different names (i.e., two differently named plasmids should ideally not contain the exact same set of operons if this causes issues in GRO).
 
     * #### 4.4.4 Initial Cell Populations
         * **Add Population:** Define one or more groups of E. coli cells.
         * For each group:
             * `Number of Cells`: How many cells in this group.
-            * `Center X`, `Center Y`: Coordinates for the center of the initial cell cluster[cite: 1126].
-            * `Radius`: Radius of the circular area for initial cell placement[cite: 1127].
-            * `Select Plasmids`: Using checkboxes, assign which of the defined plasmids this cell population group will initially contain[cite: 1120].
+            * `Center X`, `Center Y`: Coordinates for the center of the initial cell cluster.
+            * `Radius`: Radius of the circular area for initial cell placement.
+            * `Select Plasmids`: Using checkboxes, assign which of the defined plasmids this cell population group will initially contain.
 
     * #### 4.4.5 Signal Parameters
         * For each `Simple chemical` identified from your SBOL3 EDs:
-            * `Diffusion Rate (kdiff)`: The diffusion coefficient for the signal[cite: 998].
-            * `Degradation Rate (kdeg)`: The degradation coefficient for the signal[cite: 998].
+            * `Diffusion Rate (kdiff)`: The diffusion coefficient for the signal.
+            * `Degradation Rate (kdeg)`: The degradation coefficient for the signal.
             * **Initial Signal Placement:** If the signal is not generated internally by NCB or biochemical conversion:
                 * `Add Additional Initial Signal Point`: Add one or more locations for initial signal placement.
                 * For each point: `X`, `Y` coordinates, `Conc` (concentration).
@@ -185,29 +185,29 @@ The primary way to use the SimBOL-GRO plugin is through the provided Google Cola
 
     * #### 4.4.6 Quorum Sensing (QS) Parameters
         * If a signal was identified as an effector in SBOL3 regulatory interactions, you can configure its QS behavior:
-            * `QS Operator`: The comparison operator (`>`, `<`) for the `s_get_QS` action[cite: 1103].
-            * `QS Threshold`: The concentration threshold for the `s_get_QS` action[cite: 1103].
+            * `QS Operator`: The comparison operator (`>`, `<`) for the `s_get_QS` action.
+            * `QS Threshold`: The concentration threshold for the `s_get_QS` action.
             * *(The QS_Protein name is generated automatically by SimBOL based on the signal name).*
 
     * #### 4.4.7 Non-Covalent Binding (NCB) Induced Emission
         * If an NCB interaction produces a `Simple chemical` (as identified by `extract_ncb_production_genes_and_actions`):
             * The UI will list the **Emitted Signal** and the auxiliary protein (`P_aux_NCBx`) that triggers its emission.
             * `Emission Conc`: Concentration of the signal to be emitted when `P_aux_NCBx` is present.
-            * `Emission Type`: How the signal is emitted (e.g., "exact", "area", "average") for the `s_emit_signal` action[cite: 1083].
+            * `Emission Type`: How the signal is emitted (e.g., "exact", "area", "average") for the `s_emit_signal` action.
 
     * #### 4.4.8 Biochemical Conversion (S1+E->S2)
         * If an enzymatic conversion of signal S1 to S2 by enzyme E was identified:
             * The UI will list the **Reaction** (S1 → S2, Catalyzed by: Enzyme).
             * `S1 to S2 Conversion Speed`: (Formerly "Conversion Rate (S1 Abs & S2 Em, units/dt)") The amount of S1 absorbed and S2 emitted per cell per timestep when the enzyme is present.
-            * `S1 Abs. Type`: Absorption type for S1 (e.g., "exact", "area", "average") for `s_absorb_signal`[cite: 1086].
-            * `S2 Em. Type`: Emission type for S2 (e.g., "exact", "area", "average") for `s_emit_signal`[cite: 1083].
+            * `S1 Abs. Type`: Absorption type for S1 (e.g., "exact", "area", "average") for `s_absorb_signal`.
+            * `S2 Em. Type`: Emission type for S2 (e.g., "exact", "area", "average") for `s_emit_signal`.
 
     * #### 4.4.9 Bacterial Conjugation
         * `Enable Bacterial Conjugation`: Checkbox to enable/disable conjugation features.
         * If enabled:
             * `Select Plasmids for Conjugation`: Checkboxes to select which defined plasmids can be conjugated.
             * For each selected plasmid:
-                * `Rate (events/doubling time) for [plasmid_name]`: The average number of conjugation events for this plasmid per cell doubling time[cite: 1071].
+                * `Rate (events/doubling time) for [plasmid_name]`: The average number of conjugation events for this plasmid per cell doubling time.
 
     * #### 4.4.10 Saving Parameters
         * **Crucial Step:** After configuring all parameters, click the **"Save Parameters"** button at the bottom of the form. This action stores your settings for the next step. You should see a confirmation message "Parameters saved successfully."
