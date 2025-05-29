@@ -1,83 +1,55 @@
-# SimBOL 🧬➡️⚙️: SBOL3 to GRO Simulation File Converter
+## SimBOL: SBOL Designs, Ready for Simulation o SBOL to Simulation Bridge
 
-SimBOL is a tool designed to convert genetic circuit designs specified in the SBOL3 (Synthetic Biology Open Language v3.1.0) format [cite: 1, 5] into `.gro` simulation files, ready for use with the GRO simulator[cite: 975]. This process streamlines the transition from a biological design's structural and functional specification to a simulatable model by utilizing an intermediate JSON representation for simplified data handling.
+This tool automates the conversion of genetic circuit designs from SBOL3 format (v3.1.0) into files ready for simulation.
 
-## 🌟 Overview
+### How does it do it? 
 
-Synthetic biology applies engineering principles to the design of biological systems. The SBOL standard was developed to facilitate the exchange of biological design information, describing sequences, molecular interactions, and expected system behavior. GRO is a complementary language and simulator for modeling the dynamics of these circuits.
+SimBOL uses two-step process:
 
-SimBOL connects these two worlds:
+1.  First, it translates your SBOL3 design into a **optimized, easy-to-understand JSON format**. This JSON as a clear, concise summary of your circuit – much simpler to work with than raw SBOL3.
+2.  This special JSON then acts as a universal key, ready to be used by different **simulator-specific "plugins"**.
 
-1.  **SBOL3 Parsing 📄:** Accepts an SBOL3 file as input.
-2.  **Intermediate JSON Conversion 🔀:** Transforms complex SBOL3 data into a summarized, more accessible JSON format.
-3.  **User-Friendly Parameter Input 💻:** Through an included Google Colab notebook, an interactive UI (using `ipywidgets`) allows users to review extracted data and fine-tune parameters for the GRO simulation.
-4.  **`.gro` File Generation 🚀:** Generates a GRO simulation file based on the processed JSON and user-specified parameters.
+### What's SimBOL All About?
 
-## ✨ Key Features
+This tool connects the specification of a design—that is, its components, how they interconnect, and the function they must perform—with various simulators to predict its actual behavior.
 
-* **SBOL3 Conversion:** Interprets SBOL3 files detailing genetic components (genes, promoters, CDS, etc.) [cite: 259, 286] and their interactions (regulation, genetic production, non-covalent binding, biochemical reactions)[cite: 446].
-* **Intermediate JSON Representation:** Simplifies SBOL data structures for efficient processing.
-* **Interactive User Interface (in Colab):** Allows easy configuration of crucial GRO simulation parameters, including:
-    * Global settings (`dt`, `population_max`)[cite: 983].
-    * Operon/gene dynamics (activation/degradation times, noise)[cite: 1014, 1016].
-    * Plasmid construction and gene assignments[cite: 1042].
-    * Signal properties (diffusion, degradation) [cite: 998] and initial/constant emission setups.
-    * GRO actions such as Quorum Sensing (`s_get_QS`)[cite: 1105], cell painting (`paint`)[cite: 1063], conjugation (`conjugate`)[cite: 1070], and others.
-* **`.gro` File Output:** Produces a complete specification file ready for the GRO simulator.
+The process works as follows: an initial design file is first transformed into an optimized and summarized JSON. This JSON then serves as a standardized input for different plugins, each developed for a specific simulator. If necessary, this configuration can be supplemented by a user interface or an additional parameter file, allowing for the adjustment of specific details that each simulator plugin needs to operate correctly.
 
-## 📁 Project Structure
+ADJUNTAR IMAGEN
 
-The project is organized for clarity and ease of use:
+### How It's Organized (Under the Hood)
 
-* `sbol3_to_json_converter/`: Modules for parsing SBOL3 files and converting them to our intermediate JSON format.
-    * `sbol_processor.py`: Core SBOL processing logic.
-    * `upload_sbol_file.py`: Utility for file uploads in Colab.
-    * `rdf_parser.py`, `clean_json.py`: Helper modules for parsing and data cleaning.
-* `json_to_gro_generator/`: Modules that take the intermediate JSON and user parameters to generate the final `.gro` file.
-    * `ui.py`: Defines the interactive user interface.
-    * `builder.py`: Main logic for constructing the `.gro` file.
-    * `params.py`: Prepares data and parameters for `.gro` generation.
-* `notebooks/` (or `colab_notebooks/`): **Contains the primary Google Colab notebook(s)  नोटबुक for running the entire conversion workflow.**
-* `example_data/`: Sample SBOL3 input files, intermediate JSONs, and generated `.gro` files.
-* `README.md`: This file.
-* `requirements.txt`: Python dependencies needed for the project.
+The project is set up to be modular, which is just a fancy way of saying it's in logical pieces:
 
-## 🚀 Getting Started with SimBOL (via Google Colab)
+* `sbol3_to_json_converter/`: This is where the first step happens – reading SBOL3 and creating that optimized JSON.
+    * `process_sbol.py`: The brains of the SBOL processing and JSON creation.
+    * `upload_sbol_file.py`: A little helper for uploading files in Colab.
+    * `rdf_parser.py`, `clean_json.py`: Other helper bits.
+COMPLETAR AQUÍ
+* `json_to_gro_generator/`: This section is all about the **GRO-specific plugin**.
+    * `gro_file_compiler.py`: Takes the JSON and your settings to build the `.gro` file.
+    * `params.py`: Gets all the GRO-specific details ready.
+    * `ui_parameters.py`: Creates the interactive settings panel for GRO.
+* `example_data/`: Sample SBOL3 files to try, plus examples of the intermediate JSON and the final `.gro` files.
+* `README.md`
+* `USER_MANUAL_GRO_PLUGIN.md`: For more detailed instructions of gro plugin.
 
-The easiest way to use SimBOL is through the provided Google Colab notebook located in the `notebooks/` (or `colab_notebooks/`) directory of this repository.
+### Get Started with SimBOL's GRO Plugin 
 
-1.  **Open in Colab ☁️:**
-    * Navigate to the `notebooks/` directory in this GitHub repository.
-    * Click on the main `.ipynb` notebook file.
-    * You should see an "Open in Colab" badge or link at the top of the notebook preview, or you can manually open it by providing the GitHub URL to Google Colab.
+The simplest way to try out SimBOL (using the GRO plugin) is directly with our public Google Colab notebook.
 
-2.  **Run the Notebook ▶️:**
-    * Once the notebook is open in Colab, simply follow the instructions and run the cells in order.
-    * The notebook will guide you through:
-        * Cloning this repository into the Colab environment.
-        * Installing all necessary dependencies.
-        * Uploading your SBOL3 file (or using an example).
-        * Interacting with the UI to set parameters for your GRO simulation.
-        * Generating and downloading your `.gro` file.
+1.  **Open in Colab:**
+    * Click the following link to open the notebook directly in Google Colab:
+        **[Link to SimBOL's Google Colab Notebook](AQUI EL LINK CUANDO LO TENGAMOS)**
 
-    *No local installation is required if you use the Colab notebook.* The notebook handles the setup within the Colab environment.
+2.  **Run the Notebook:**
+    * Simply follow the instructions within the notebook and run the cells in order. The notebook will handle the entire process:
+        * Cloning the SimBOL repository and installing all necessary dependencies.
+        * Allowing you to upload your design file in SBOL3 format.
+        * Automatically converting your SBOL3 design into the optimized intermediate JSON format (which will also be downloaded for you to review).
+        * Displaying the user-friendly interface for you to configure GRO-specific parameters.
+        * Generating your simulation-ready `.gro` file and and downloading it automatically.
 
-## 🔄 Workflow within the Colab Notebook
+### License
 
-1.  **Setup:** The initial cells clone the SimBOL repository and install required Python packages.
-2.  **Input SBOL3 File:** You'll be prompted to upload your SBOL3 file.
-3.  **(Automatic) JSON Conversion:** The tool processes your SBOL3 file into an internal, summarized JSON format.
-4.  **Parameter Configuration UI:** An interactive interface will appear, pre-filled with information from your design. Here, you can adjust simulation parameters for GRO.
-5.  **`.gro` File Generation:** After confirming parameters, the `.gro` file is generated.
-6.  **Download 💾:** You'll be able to download the generated `.gro` file directly from Colab.
-
-## 🌱 Future Enhancements
-
-
-## 🤝 Contributing
-
-
-
-## 📜 License
-
-This project is licensed under the MIT License - see the `LICENSE.md` file for details.
+This project is shared under the MIT License.
