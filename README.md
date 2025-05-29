@@ -15,7 +15,7 @@ This tool connects the specification of a design—that is, its components, how 
 
 The process works as follows: an initial design file is first transformed into an optimized and summarized JSON. This JSON then serves as a standardized input for different plugins, each developed for a specific simulator. If necessary, this configuration can be supplemented by a user interface or an additional parameter file, allowing for the adjustment of specific details that each simulator plugin needs to operate correctly.
 
-ADJUNTAR IMAGEN
+![Diagrama de Flujo de SimBOL](./images/SimBOL_FW.png)
 
 ### How It's Organized (Under the Hood)
 
