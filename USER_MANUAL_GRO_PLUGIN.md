@@ -257,7 +257,6 @@ The generated `.gro` file will contain several sections based on your SBOL3 inpu
 * **`ModuleNotFoundError` in Colab:**
     * Ensure the "Environment Setup" cell (Cell 1) has run successfully and cloned the SimBOL repository.
     * Confirm `sys.path.append('/content/SimBOL')` was executed.
-    * Check that your SimBOL GitHub repository has the correct folder structure (`sbol3_to_json_converter/`, `json_to_gro_generator/`) and that each of these folders contains an `__init__.py` file (can be empty).
 * **Errors during "Convert SBOL3 to JSON" (Cell 3):**
     * Usually indicates an issue with the input SBOL3 file. Validate your SBOL3 file against the SBOL3 specification.
     * Ensure all required information (types, roles, interactions as detailed in Section 3) is present.
