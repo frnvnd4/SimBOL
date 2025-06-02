@@ -39,8 +39,10 @@ COMPLETAR AQUÍ
 The simplest way to try out SimBOL (using the GRO plugin) is directly with our public Google Colab notebook.
 
 1.  **Open in Colab:**
-    * Click the following link to open the notebook directly in Google Colab:
-        **[Link to SimBOL's Google Colab Notebook](AQUI EL LINK CUANDO LO TENGAMOS)**
+    * Click the badge below to open the notebook directly in Google Colab:
+      <a target="_blank" href="https://colab.research.google.com/github/frnvnd4/SimBOL/blob/main/SimBOLs_GRO_Plugin.ipynb">
+        <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
+      </a>
 
 2.  **Run the Notebook:**
     * Simply follow the instructions within the notebook and run the cells in order. The notebook will handle the entire process:
