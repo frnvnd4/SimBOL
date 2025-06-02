@@ -1,4 +1,4 @@
-## SimBOL: SBOL Designs, Ready for Simulation o SBOL to Simulation Bridge
+## SimBOL: SBOL Designs, Ready for Simulation <a target="_blank" href="https://colab.research.google.com/github/frnvnd4/SimBOL/blob/main/SimBOLs_GRO_Plugin.ipynb"> <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
 
 This tool automates the conversion of genetic circuit designs from SBOL3 format (v3.1.0) into files ready for simulation.
 
