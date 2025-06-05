@@ -457,49 +457,92 @@ def extract_biochemical_reactions(interactions_list, ed_definitions_list, hierar
 
 def extract_genes_and_qs_actions(interactions_list, hierarchy_map, components_list, ed_definitions_list):
   """
-  (Versión definitiva y robusta)
-  Interpreta y combina interacciones complejas (ej. anulación de represión) 
-  sin simplificar ni omitir la lógica de los componentes.
+  Extracts gene definitions for GRO and sets up a map for Quorum Sensing (QS) actions.
+  This function processes interactions to determine gene regulation (promoters, TFs)
+  and identifies chemicals that act as effectors (inducing/repressing), mapping them
+  to "QS_Proteins" that represent their activity in the GRO model.
+
+  Args:
+    interactions_list (list): List of all interaction objects.
+    hierarchy_map (dict): The hierarchy data, showing component organization.
+    components_list (list): List of all component objects (DNA parts, proteins etc.).
+    ed_definitions_list (list): List of "ED" (External Definitions) for chemicals, etc.
+
+  Returns:
+    tuple: A tuple containing:
+      - genes_definitions (list): List of dictionaries, each defining a gene for GRO.
+      - qs_action_setup_map (dict): Map where keys are normalized chemical names and
+                                    values are (QS_Protein_ID, config_type, original_chem_name).
+                                    This map is used to generate s_get_QS actions.
   """
   genes_definitions = []
   component_lookup = {comp["displayId"]: comp for comp in components_list}
   ed_lookup = {ed_item.get("name", ""): ed_item for ed_item in ed_definitions_list}
-  chemical_effects_on_protein_regulators = {}
-  qs_action_setup_map = {}
 
+  # To store how chemicals affect regulatory proteins (TFs)
+  chemical_effects_on_protein_regulators = {} # protein_id -> (qs_protein_effector, logic_of_effect)
+  # To store chemicals that directly induce/repress DNA elements (promoters/operators)
+  direct_chemical_inducer_to_qs_protein_map = {} # chemical_original_name -> qs_protein_effector
+  # Master map for all chemicals that need a QS_Protein representation
+  qs_action_setup_map = {} # normalized_chem_name -> (QS_Protein_ID, config_type, original_chem_name)
+
+  # --- Step 1: Pre-process interactions to identify chemical effectors and their targets ---
   for interaction_item in interactions_list:
     interaction_type = interaction_item.get("type")
+    # Focus on regulatory interactions: Inhibition, Stimulation, Control
     if interaction_type not in ["Inhibition", "Stimulation", "Control"]:
       continue
+
     participants_data = interaction_item.get("participants", [])
     actor_participants = [p for p in participants_data if p["role"] in ["Inhibitor", "Stimulator", "Modifier"]]
+    
+    # Target: Inhibited, Stimulated, Modified, Template (for genetic production context)
     target_id = next((p_data["participant"] for p_data in participants_data if p_data["role"] in ["Inhibited", "Stimulated", "Modified", "Template"]), None)
 
     if not actor_participants or not target_id:
-      continue
+      continue # Skip if actors or target is missing
 
     for actor in actor_participants:
       actor_id = actor["participant"]
-      if ed_lookup.get(actor_id, {}).get("type") == "Simple chemical":
-        target_is_protein_tf = (component_lookup.get(target_id, {}).get("type") == "Protein") or \
-                               (ed_lookup.get(target_id) and ed_lookup.get(target_id, {}).get("type") == "Protein")
-        
+      
+      # Check if the actor is a simple chemical from ED
+      actor_is_ed_chemical = ed_lookup.get(actor_id, {}).get("type") == "Simple chemical"
+
+      if actor_is_ed_chemical:
         normalized_actor_chem_id = normalize_signal_name(actor_id)
+        # Create a unique QS_Protein name for this chemical effector
         qs_protein_for_actor_chemical = f"QS_{normalized_actor_chem_id}"
 
+        # Store this mapping for later s_get_QS action generation
         if normalized_actor_chem_id not in qs_action_setup_map:
           qs_action_setup_map[normalized_actor_chem_id] = (qs_protein_for_actor_chemical, "SENSING_CONFIG_FROM_UI", actor_id)
-        
-        if target_is_protein_tf:
+
+        target_component_data = component_lookup.get(target_id)
+        # Case 1: Chemical directly affects a DNA component (promoter, operator, etc.)
+        target_is_dna_regulatory_component = target_component_data and \
+                                          (target_component_data.get("type") == "DNA" or
+                                           target_component_data.get("role") in ["Promoter", "Operator", "Engineered-Region"])
+
+        # Case 2: Chemical affects a protein TF
+        target_is_protein_tf = (component_lookup.get(target_id, {}).get("type") == "Protein") or \
+                               (ed_lookup.get(target_id) and ed_lookup.get(target_id, {}).get("type") == "Protein")
+
+        if target_is_dna_regulatory_component:
+          direct_chemical_inducer_to_qs_protein_map[actor_id] = qs_protein_for_actor_chemical
+        elif target_is_protein_tf:
+          # Determine the logic of the chemical's effect on the protein TF
           logic_chemical_on_tf = "NOT" if interaction_type == "Inhibition" else "YES"
           chemical_effects_on_protein_regulators[target_id] = (qs_protein_for_actor_chemical, logic_chemical_on_tf)
 
+  # --- Step 2: Create Gene Definitions for GRO based on hierarchy and processed regulatory info ---
   gene_counter = 0
-  for operon_data in hierarchy_map.values():
+  for operon_data in hierarchy_map.values(): # Iterate through each operon/design in the hierarchy
     raw_elements_in_operon = operon_data.get("components", [])
+    # Flatten the component list for this operon for easier processing
     flattened_elements_list = flatten_components(raw_elements_in_operon, hierarchy_map)
     is_operon_constitutive = operon_data.get("constitutive", False)
 
+    # Group CDSs by their preceding promoters
     gene_groups_by_promoter = []
     i = 0
     while i < len(flattened_elements_list):
@@ -508,82 +551,105 @@ def extract_genes_and_qs_actions(interactions_list, hierarchy_map, components_li
         promoter_id_current = element_id_current
         cds_list_for_this_promoter = []
         j = i + 1
+        # Collect all subsequent CDSs until another promoter is found or list ends
         while j < len(flattened_elements_list):
           next_element_id_in_list = flattened_elements_list[j]
           next_element_role_str = component_lookup.get(next_element_id_in_list, {}).get('role')
           if next_element_role_str == 'CDS':
             cds_list_for_this_promoter.append(next_element_id_in_list)
           elif next_element_role_str == 'Promoter':
-            break
+            break # Found the next promoter, stop collecting for the current one
           j += 1
+
         if cds_list_for_this_promoter:
           gene_groups_by_promoter.append((promoter_id_current, cds_list_for_this_promoter))
-        i = j - 1
+        i = j - 1 # Continue from the element that broke the inner loop (or end)
       i += 1
 
+    # Process each promoter-CDS group to define a gene
     for promoter_id_val, cds_ids_list in gene_groups_by_promoter:
       gene_counter += 1
       gene_name_gro_formatted = f'"Operon_{gene_counter}"'
-      gene_definition = {"name": gene_name_gro_formatted, "proteins": {f'"{cds_id}"' for cds_id in cds_ids_list}, "promoter": {"function": '"TRUE"' if is_operon_constitutive else '"UNKNOWN"', "transcription_factors": set(), "gate_override": None}}
+
+      gene_definition = {
+        "name": gene_name_gro_formatted,
+        "proteins": {f'"{cds_id}"' for cds_id in cds_ids_list},
+        "promoter": {
+          "function": '"TRUE"' if is_operon_constitutive else '"UNKNOWN"', # Default logic
+          "transcription_factors": set()
+        }
+      }
       
       effective_regulators_for_promoter = {} 
 
+      # Determine TFs and their logic for the current promoter
       for reg_interaction_item in interactions_list:
         reg_interaction_type = reg_interaction_item.get("type")
         if reg_interaction_type not in ["Control", "Stimulation", "Inhibition"]:
           continue
-        
-        reg_participants_list = reg_interaction_item.get("participants", [])
-        affected_comp_in_interaction = next((p_data["participant"] for p_data in reg_participants_list if p_data["role"] in ["Modified", "Stimulated", "Inhibited", "Template"]), None)
-        regulator_participants = [p for p in reg_participants_list if p["role"] in ["Modifier", "Stimulator", "Inhibitor"]]
 
+        reg_participants_list = reg_interaction_item.get("participants", [])
+        # The component directly targeted by this regulatory interaction
+        affected_comp_in_interaction = next((p_data["participant"] for p_data in reg_participants_list if p_data["role"] in ["Modified", "Stimulated", "Inhibited", "Template"]), None)
+
+        regulator_participants = [p for p in reg_participants_list if p["role"] in ["Modifier", "Stimulator", "Inhibitor"]]
         if not regulator_participants or not affected_comp_in_interaction:
           continue
 
-        if affected_comp_in_interaction == promoter_id_val or is_promoter_under_control_of_affected_component(affected_comp_in_interaction, promoter_id_val, hierarchy_map):
-          for regulator_participant in regulator_participants:
-            regulator_original_id = regulator_participant["participant"]
+        for regulator_participant in regulator_participants:
+          regulator_original_id = regulator_participant["participant"]
+
+          # Check if this interaction affects the current promoter (directly or via a controlled element)
+          if affected_comp_in_interaction == promoter_id_val or \
+             is_promoter_under_control_of_affected_component(affected_comp_in_interaction, promoter_id_val, hierarchy_map):
+
             original_interaction_logic = "YES"
             if reg_interaction_type == "Inhibition":
               original_interaction_logic = "NOT"
 
-            if ed_lookup.get(regulator_original_id, {}).get("type") == "Simple chemical":
+            regulator_is_chemical = ed_lookup.get(regulator_original_id, {}).get("type") == "Simple chemical"
+            if regulator_is_chemical:
               normalized_chem_id = normalize_signal_name(regulator_original_id)
               qs_protein_id = f"QS_{normalized_chem_id}"
               if normalized_chem_id not in qs_action_setup_map:
                 qs_action_setup_map[normalized_chem_id] = (qs_protein_id, "SENSING_CONFIG_FROM_UI", regulator_original_id)
               effective_regulators_for_promoter[qs_protein_id] = original_interaction_logic
-            else:
+            else: 
               protein_tf_cds_id = get_template_for_participant(regulator_original_id, ed_definitions_list, interactions_list, hierarchy_map, components_list)
               effective_regulators_for_promoter[protein_tf_cds_id] = original_interaction_logic
 
               if regulator_original_id in chemical_effects_on_protein_regulators:
-                qs_protein_modulator_id, logic_chem_on_tf = chemical_effects_on_protein_regulators[regulator_original_id]
+                chemical_modulator_id, logic_chem_on_tf = chemical_effects_on_protein_regulators[regulator_original_id]
 
-                net_chemical_effect_logic = "YES"
-                if logic_chem_on_tf == original_interaction_logic: 
-                  net_chemical_effect_logic = "YES"
-                else: 
-                  net_chemical_effect_logic = "NOT"
-                
-                effective_regulators_for_promoter[qs_protein_modulator_id] = net_chemical_effect_logic
-                gene_definition["promoter"]["gate_override"] = '"OR"'
+                net_effect_logic = "YES" if (original_interaction_logic == "NOT" and logic_chem_on_tf == "NOT") else "NOT"
+                normalized_modulator_id = normalize_signal_name(chemical_modulator_id)
+                qs_modulator_id = f"QS_{normalized_modulator_id}"
+                if normalized_modulator_id not in qs_action_setup_map:
+                    qs_action_setup_map[normalized_modulator_id] = (qs_modulator_id, "SENSING_CONFIG_FROM_UI", chemical_modulator_id)
+                effective_regulators_for_promoter[qs_modulator_id] = net_effect_logic
 
-      if gene_definition["promoter"]["gate_override"]:
-        gene_definition["promoter"]["function"] = gene_definition["promoter"]["gate_override"]
-      else:
-        if not effective_regulators_for_promoter:
-          if not is_operon_constitutive:
-            gene_definition["promoter"]["function"] = '"FALSE"'
-        elif len(effective_regulators_for_promoter) == 1:
-          gene_definition["promoter"]["function"] = f'"{list(effective_regulators_for_promoter.values())[0]}"'
-        else:
-          gene_definition["promoter"]["function"] = '"AND"'
+      # Finalize promoter logic and TFs based on effective regulators
+      effective_regulators_list = list(effective_regulators_for_promoter.items())
+      current_gene_promoter_tfs = gene_definition["promoter"]["transcription_factors"]
 
-      for tf_id, logic in effective_regulators_for_promoter.items():
-        tf_entry = f'"-{tf_id}"' if logic == "NOT" else f'"{tf_id}"'
-        gene_definition["promoter"]["transcription_factors"].add(tf_entry)
-      
+      if not effective_regulators_list: # No regulators found
+        if not is_operon_constitutive:
+          gene_definition["promoter"]["function"] = '"FALSE"' # Non-constitutive and no activators means OFF
+      elif len(effective_regulators_list) == 1: # Single regulator
+        tf_id_val, logic_val = effective_regulators_list[0]
+        gene_definition["promoter"]["function"] = f'"{logic_val}"'
+        current_gene_promoter_tfs.add(f'"{tf_id_val}"')
+      else: # Multiple regulators -> default to AND logic
+        gene_definition["promoter"]["function"] = '"AND"'
+        for tf_id_val, logic_val in effective_regulators_list:
+          tf_entry = f'"-{tf_id_val}"' if logic_val == "NOT" else f'"{tf_id_val}"'
+          current_gene_promoter_tfs.add(tf_entry)
+
+      # If operon was marked constitutive but has regulators, update function from simple "TRUE"
+      if is_operon_constitutive and effective_regulators_list:
+        if gene_definition["promoter"]["function"] == '"TRUE"': # Default constitutive "TRUE"
+          if len(effective_regulators_list) > 1:
+            gene_definition["promoter"]["function"] = '"AND"'
       genes_definitions.append(gene_definition)
 
   return genes_definitions, qs_action_setup_map
