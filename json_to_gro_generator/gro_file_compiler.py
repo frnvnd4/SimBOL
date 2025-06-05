@@ -771,7 +771,8 @@ def generate_gro_file(simulation_params, gene_definitions_list, qs_actions_map_d
   # Gene Definitions
   gro_content_lines.append("// Gene Definitions")
   for gene_data_item in gene_definitions_list:
-    protein_list_str = ", ".join(gene_data_item["proteins"]) 
+    sorted_proteins = sorted(list(gene_data_item["proteins"]))
+    protein_list_str = ", ".join(sorted_proteins)
     tf_list_str = ", ".join(gene_data_item["promoter"]["transcription_factors"]) 
 
     gene_gro_name = gene_data_item["name"] 
