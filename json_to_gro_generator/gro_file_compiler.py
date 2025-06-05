@@ -539,47 +539,53 @@ def extract_genes_and_qs_actions(interactions_list, hierarchy_map, components_li
       continue
 
     participants_data = interaction_item.get("participants", [])
-    # Actor: Inhibitor, Stimulator, Modifier
-    actor_id = next((p_data["participant"] for p_data in participants_data if p_data["role"] in ["Inhibitor", "Stimulator", "Modifier"]), None)
+    # --- MODIFICACIÓN: Buscar TODOS los reguladores, no solo el primero ---
+    actor_participants = [p for p in participants_data if p["role"] in ["Inhibitor", "Stimulator", "Modifier"]]
+    
     # Target: Inhibited, Stimulated, Modified, Template (for genetic production context)
     target_id = next((p_data["participant"] for p_data in participants_data if p_data["role"] in ["Inhibited", "Stimulated", "Modified", "Template"]), None)
 
-    if not actor_id or not target_id:
-      continue # Skip if actor or target is missing
+    if not actor_participants or not target_id:
+      continue # Skip if actors or target is missing
 
-    # Check if the actor is a simple chemical from ED
-    actor_is_ed_chemical = ed_lookup.get(actor_id, {}).get("type") == "Simple chemical"
+    # --- MODIFICACIÓN: Bucle para procesar cada regulador encontrado ---
+    for actor in actor_participants:
+      actor_id = actor["participant"]
+      
+      # Check if the actor is a simple chemical from ED
+      actor_is_ed_chemical = ed_lookup.get(actor_id, {}).get("type") == "Simple chemical"
 
-    if actor_is_ed_chemical:
-      normalized_actor_chem_id = normalize_signal_name(actor_id)
-      # Create a unique QS_Protein name for this chemical effector
-      qs_protein_for_actor_chemical = f"QS_{normalized_actor_chem_id}"
+      if actor_is_ed_chemical:
+        normalized_actor_chem_id = normalize_signal_name(actor_id)
+        # Create a unique QS_Protein name for this chemical effector
+        qs_protein_for_actor_chemical = f"QS_{normalized_actor_chem_id}"
 
-      # Store this mapping for later s_get_QS action generation
-      if normalized_actor_chem_id not in qs_action_setup_map:
-        qs_action_setup_map[normalized_actor_chem_id] = (qs_protein_for_actor_chemical, "SENSING_CONFIG_FROM_UI", actor_id)
+        # Store this mapping for later s_get_QS action generation
+        if normalized_actor_chem_id not in qs_action_setup_map:
+          qs_action_setup_map[normalized_actor_chem_id] = (qs_protein_for_actor_chemical, "SENSING_CONFIG_FROM_UI", actor_id)
 
-      target_component_data = component_lookup.get(target_id)
-      # Case 1: Chemical directly affects a DNA component (promoter, operator, etc.)
-      target_is_dna_regulatory_component = target_component_data and \
-                                        (target_component_data.get("type") == "DNA" or
-                                         target_component_data.get("role") in ["Promoter", "Operator", "Engineered-Region"])
+        target_component_data = component_lookup.get(target_id)
+        # Case 1: Chemical directly affects a DNA component (promoter, operator, etc.)
+        target_is_dna_regulatory_component = target_component_data and \
+                                          (target_component_data.get("type") == "DNA" or
+                                           target_component_data.get("role") in ["Promoter", "Operator", "Engineered-Region"])
 
-      # Case 2: Chemical affects a protein TF
-      target_is_protein_tf = (component_lookup.get(target_id, {}).get("type") == "Protein") or \
-                             (ed_lookup.get(target_id) and ed_lookup.get(target_id, {}).get("type") == "Protein")
+        # Case 2: Chemical affects a protein TF
+        target_is_protein_tf = (component_lookup.get(target_id, {}).get("type") == "Protein") or \
+                               (ed_lookup.get(target_id) and ed_lookup.get(target_id, {}).get("type") == "Protein")
 
-      if target_is_dna_regulatory_component:
-        direct_chemical_inducer_to_qs_protein_map[actor_id] = qs_protein_for_actor_chemical
-      elif target_is_protein_tf:
-        # Determine the logic of the chemical's effect on the protein TF
-        logic_chemical_on_tf = "NOT" if interaction_type == "Inhibition" else "YES"
-        chemical_effects_on_protein_regulators[target_id] = (qs_protein_for_actor_chemical, logic_chemical_on_tf)
+        if target_is_dna_regulatory_component:
+          direct_chemical_inducer_to_qs_protein_map[actor_id] = qs_protein_for_actor_chemical
+        elif target_is_protein_tf:
+          # Determine the logic of the chemical's effect on the protein TF
+          logic_chemical_on_tf = "NOT" if interaction_type == "Inhibition" else "YES"
+          chemical_effects_on_protein_regulators[target_id] = (qs_protein_for_actor_chemical, logic_chemical_on_tf)
 
   # --- Step 2: Create Gene Definitions for GRO based on hierarchy and processed regulatory info ---
   gene_counter = 0
-  for operon_data in hierarchy_map.values():
+  for operon_data in hierarchy_map.values(): # Iterate through each operon/design in the hierarchy
     raw_elements_in_operon = operon_data.get("components", [])
+    # Flatten the component list for this operon for easier processing
     flattened_elements_list = flatten_components(raw_elements_in_operon, hierarchy_map)
     is_operon_constitutive = operon_data.get("constitutive", False)
 
@@ -632,50 +638,57 @@ def extract_genes_and_qs_actions(interactions_list, hierarchy_map, components_li
         reg_participants_list = reg_interaction_item.get("participants", [])
         # The component directly targeted by this regulatory interaction
         affected_comp_in_interaction = next((p_data["participant"] for p_data in reg_participants_list if p_data["role"] in ["Modified", "Stimulated", "Inhibited", "Template"]), None)
-        regulator_original_id = next((p_data["participant"] for p_data in reg_participants_list if p_data["role"] in ["Modifier", "Stimulator", "Inhibitor"]), None)
+        
+        # --- MODIFICACIÓN: Buscar TODOS los reguladores, no solo el primero ---
+        regulator_participants = [p for p in reg_participants_list if p["role"] in ["Modifier", "Stimulator", "Inhibitor"]]
 
-        if not regulator_original_id or not affected_comp_in_interaction:
+        if not regulator_participants or not affected_comp_in_interaction:
           continue
+        
+        # --- MODIFICACIÓN: Bucle para procesar cada regulador encontrado ---
+        for regulator_participant in regulator_participants:
+          regulator_original_id = regulator_participant["participant"]
 
-        # Check if this interaction affects the current promoter (directly or via a controlled element)
-        if affected_comp_in_interaction == promoter_id_val or \
-           is_promoter_under_control_of_affected_component(affected_comp_in_interaction, promoter_id_val, hierarchy_map):
+          # Check if this interaction affects the current promoter (directly or via a controlled element)
+          if affected_comp_in_interaction == promoter_id_val or \
+             is_promoter_under_control_of_affected_component(affected_comp_in_interaction, promoter_id_val, hierarchy_map):
 
-          original_interaction_logic = "YES"
-          if reg_interaction_type == "Inhibition":
-            original_interaction_logic = "NOT"
+            original_interaction_logic = "YES"
+            if reg_interaction_type == "Inhibition":
+              original_interaction_logic = "NOT"
 
-          final_tf_gro_id = None
-          final_tf_logic = original_interaction_logic
+            final_tf_gro_id = None
+            final_tf_logic = original_interaction_logic
 
-          # Case A: The original regulator is a protein TF that is itself modulated by a chemical
-          if regulator_original_id in chemical_effects_on_protein_regulators:
-            qs_protein_modulator_id, logic_chem_on_tf = chemical_effects_on_protein_regulators[regulator_original_id]
-            final_tf_gro_id = qs_protein_modulator_id # The chemical's QS_Protein acts as the TF
-            # Adjust logic: e.g., if chemical inhibits an activator (YES), final logic is NOT
-            if logic_chem_on_tf == "NOT":
-              final_tf_logic = "NOT" if original_interaction_logic == "YES" else "YES"
+            # Case A: The original regulator is a protein TF that is itself modulated by a chemical
+            if regulator_original_id in chemical_effects_on_protein_regulators:
+              qs_protein_modulator_id, logic_chem_on_tf = chemical_effects_on_protein_regulators[regulator_original_id]
+              final_tf_gro_id = qs_protein_modulator_id # The chemical's QS_Protein acts as the TF
+              # Adjust logic: e.g., if chemical inhibits an activator (YES), final logic is NOT
+              if logic_chem_on_tf == "NOT":
+                final_tf_logic = "NOT" if original_interaction_logic == "YES" else "YES"
 
-          # Case B: The original regulator is a chemical that directly affects a DNA element (promoter/operator)
-          elif regulator_original_id in direct_chemical_inducer_to_qs_protein_map:
-            final_tf_gro_id = direct_chemical_inducer_to_qs_protein_map[regulator_original_id]
-            # Logic is already set by original_interaction_logic
+            # Case B: The original regulator is a chemical that directly affects a DNA element (promoter/operator)
+            elif regulator_original_id in direct_chemical_inducer_to_qs_protein_map:
+              final_tf_gro_id = direct_chemical_inducer_to_qs_protein_map[regulator_original_id]
+              # Logic is already set by original_interaction_logic
 
-          # Case C: The original regulator is a protein TF acting directly (not chemically modulated)
-          else:
-            # Only resolve to CDS if it's not a known chemical (already handled or not relevant here)
-            if not ed_lookup.get(regulator_original_id, {}).get("type") == "Simple chemical":
-              protein_tf_cds_id = get_template_for_participant(regulator_original_id, ed_definitions_list, interactions_list, hierarchy_map, components_list)
-              final_tf_gro_id = protein_tf_cds_id if protein_tf_cds_id else regulator_original_id # Fallback to original
+            # Case C: The original regulator is a protein TF acting directly (not chemically modulated)
             else:
-              # This case (chemical not in direct_chemical_inducer_map) implies it might not be directly regulating this promoter's DNA.
-              # Or it's a chemical whose QS_Protein setup was missed. For safety, use original name as fallback.
-              final_tf_gro_id = regulator_original_id
+              # Only resolve to CDS if it's not a known chemical (already handled or not relevant here)
+              if not ed_lookup.get(regulator_original_id, {}).get("type") == "Simple chemical":
+                protein_tf_cds_id = get_template_for_participant(regulator_original_id, ed_definitions_list, interactions_list, hierarchy_map, components_list)
+                final_tf_gro_id = protein_tf_cds_id if protein_tf_cds_id else regulator_original_id # Fallback to original
+              else:
+                # This case (chemical not in direct_chemical_inducer_map) implies it might not be directly regulating this promoter's DNA.
+                # Or it's a chemical whose QS_Protein setup was missed. For safety, use original name as fallback.
+                final_tf_gro_id = regulator_original_id
 
-          if final_tf_gro_id:
-            # Store the effective TF and its logic. Handle potential conflicts if multiple interactions define the same TF differently.
-            if final_tf_gro_id not in effective_regulators_for_promoter:
-              effective_regulators_for_promoter[final_tf_gro_id] = final_tf_logic
+            if final_tf_gro_id:
+              # Store the effective TF and its logic. Handle potential conflicts if multiple interactions define the same TF differently.
+              if final_tf_gro_id not in effective_regulators_for_promoter:
+                effective_regulators_for_promoter[final_tf_gro_id] = final_tf_logic
+              # else: Conflict detected, current implementation keeps the first logic found. Could be refined.
 
       # Finalize promoter logic and TFs based on effective regulators
       effective_regulators_list = list(effective_regulators_for_promoter.items())
@@ -702,7 +715,6 @@ def extract_genes_and_qs_actions(interactions_list, hierarchy_map, components_li
       genes_definitions.append(gene_definition)
 
   return genes_definitions, qs_action_setup_map
-
 def extract_signal_definitions(ed_definitions_list, user_signal_parameters):
   """
   Extracts signal definitions for GRO from External Definitions (ED) and user-provided parameters.
