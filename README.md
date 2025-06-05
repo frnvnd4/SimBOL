@@ -1,4 +1,4 @@
-## SimBOL: SBOL Designs, Ready for Simulation <a target="_blank" href="https://colab.research.google.com/github/frnvnd4/SimBOL/blob/main/SimBOLs_GRO_Plugin.ipynb"> <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
+## SimBOL: SBOL Designs, Ready for Simulation <a target="_blank" href="https://colab.research.google.com/github/frnvnd4/SimBOL/blob/main/SimBOLs_GRO_Plugin.ipynb?flush_cache=true"> <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
 
 This tool automates the conversion of genetic circuit designs from SBOL3 format (v3.1.0) into files ready for simulation.
 
@@ -40,7 +40,7 @@ The simplest way to try out SimBOL (using the GRO plugin) is directly with our p
 
 1.  **Open in Colab:**
     * Click the badge below to open the notebook directly in Google Colab:
-      <a target="_blank" href="https://colab.research.google.com/github/frnvnd4/SimBOL/blob/main/SimBOLs_GRO_Plugin.ipynb">
+      <a target="_blank" href="https://colab.research.google.com/github/frnvnd4/SimBOL/blob/main/SimBOLs_GRO_Plugin.ipynb?flush_cache=true">
         <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
       </a>
 
