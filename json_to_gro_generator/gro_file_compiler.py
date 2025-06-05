@@ -242,51 +242,6 @@ def is_promoter_under_control_of_affected_component(affected_component_id, promo
       return True
   return False
 
-def extract_degradation_actions(interactions_list, ed_definitions_list, hierarchy_map, components_list):
-  """
-  Extracts degradation actions from interactions.
-  Note: This function is defined but its output is not directly used within this script's
-  `generate_gro_file` flow. It's assumed to be called externally if its results are needed.
-
-  Args:
-    interactions_list (list): List of all interaction objects.
-    ed_definitions_list (list): List of "ED" (External Definitions) objects.
-    hierarchy_map (dict): The hierarchy data.
-    components_list (list): List of all component objects.
-
-  Returns:
-    list: A list of tuples, where each tuple represents a degradation action:
-          (degrader_gro_id, target_gro_id, target_type_string).
-  """
-  degradation_actions_tuples = []
-  component_id_to_type_map = {c["displayId"]: c["type"] for c in components_list}
-  ed_id_to_type_map = {e["name"]: e["type"] for e in ed_definitions_list}
-
-  for interaction_item in interactions_list:
-    if interaction_item["type"] == "Degradation":
-      reactant_ids = []
-      degrader_ids = []
-      for p_data in interaction_item["participants"]:
-        participant_role = p_data["role"]
-        participant_id = p_data["participant"]
-        if participant_role == "Reactant":
-          reactant_ids.append(participant_id)
-        else:
-          degrader_ids.append(participant_id)
-
-      for degrader_id_val in degrader_ids:
-        for target_id_val in reactant_ids:
-          degrader_gro_id = get_template_for_participant(degrader_id_val, ed_definitions_list, interactions_list, hierarchy_map, components_list)
-          target_gro_id = get_template_for_participant(target_id_val, ed_definitions_list, interactions_list, hierarchy_map, components_list)
-          target_type_str = component_id_to_type_map.get(target_gro_id) or \
-                              ed_id_to_type_map.get(target_gro_id) or \
-                              component_id_to_type_map.get(target_id_val) or \
-                              ed_id_to_type_map.get(target_id_val) or \
-                              "Unknown"
-
-          degradation_actions_tuples.append((degrader_gro_id, target_gro_id, target_type_str))
-  return degradation_actions_tuples
-
 def get_reactant_gro_name_for_ncb(reactant_original_name, ed_definitions_list, component_lookup_map,
                                   qs_actions_setup_map_ref, all_interactions_list, full_hierarchy_data):
   """
@@ -783,7 +738,7 @@ def generate_qs_signal_sensing_actions(qs_action_setup_map, user_signal_paramete
       sensing_actions.append(f'action({{}}, "s_get_QS", {{{signal_gro_id_tostring}, "{operator_symbol}", "{threshold_value}", "{qs_protein_id}"}});')
   return sensing_actions
 
-def generate_gro_file(simulation_params, gene_definitions_list, qs_actions_map_data, signal_definitions_list, protein_paint_actions_map, _degradation_actions_list, biochemical_reactions_data_list, output_file_path):
+def generate_gro_file(simulation_params, gene_definitions_list, qs_actions_map_data, signal_definitions_list, protein_paint_actions_map, biochemical_reactions_data_list, output_file_path):
   """
   Generates the content of a .gro file based on processed simulation parameters and biological constructs.
 
@@ -793,7 +748,6 @@ def generate_gro_file(simulation_params, gene_definitions_list, qs_actions_map_d
     qs_actions_map_data (dict): Map for QS actions from extract_genes_and_qs_actions.
     signal_definitions_list (list): List of s_signal definition strings from extract_signal_definitions.
     protein_paint_actions_map (dict): Map of protein IDs to color names for paint actions.
-    _degradation_actions_list (list): List of degradation action tuples (currently not used in this function).
     biochemical_reactions_data_list (list): List of biochemical reaction data from extract_biochemical_reactions.
     output_file_path (str): Path to write the generated .gro file.
   """
@@ -827,29 +781,31 @@ def generate_gro_file(simulation_params, gene_definitions_list, qs_actions_map_d
     if gene_data_item.get("is_aux_ncb_gene"):
       gro_content_lines.append(f"// Auxiliary gene for Non-Covalent Binding induced emission: {gene_name_key_for_params}")
       fixed_gene_params = gene_data_item["fixed_params"]
-      act_time, act_var = fixed_gene_params["act_time"], fixed_gene_params["act_var"]
-      deg_time, deg_var = fixed_gene_params["deg_time"], fixed_gene_params["deg_var"]
+      act_times_str = str(fixed_gene_params["act_time"])
+      act_vars_str = str(fixed_gene_params["act_var"])
+      deg_times_str = str(fixed_gene_params["deg_time"])
+      deg_vars_str = str(fixed_gene_params["deg_var"])
       to_on_noise, to_off_noise, noise_t = fixed_gene_params["toOn"], fixed_gene_params["toOff"], fixed_gene_params["noise_time"]
     else:
       default_timings = {"act_time": 10.0, "act_var": 1.0, "deg_time": 20.0, "deg_var": 1.0,
                          "toOn": 0.0, "toOff": 0.0, "noise_time": 100.0}
-      gene_timing_params = simulation_params.get("gene_parameters", {}).get(gene_name_key_for_params, default_timings)
+      gene_timing_params = simulation_params.get("gene_parameters", {}).get(gene_name_key_for_params, {})
 
-      act_time = float(gene_timing_params.get("act_time", default_timings["act_time"]))
-      act_var = float(gene_timing_params.get("act_var", default_timings["act_var"]))
-      deg_time = float(gene_timing_params.get("deg_time", default_timings["deg_time"]))
-      deg_var = float(gene_timing_params.get("deg_var", default_timings["deg_var"]))
+      act_times = gene_timing_params.get("act_times", [default_timings["act_time"]])
+      act_vars = gene_timing_params.get("act_vars", [default_timings["act_var"]])
+      deg_times = gene_timing_params.get("deg_times", [default_timings["deg_time"]])
+      deg_vars = gene_timing_params.get("deg_vars", [default_timings["deg_var"]])
+
+      act_times_str = ", ".join(map(str, act_times))
+      act_vars_str = ", ".join(map(str, act_vars))
+      deg_times_str = ", ".join(map(str, deg_times))
+      deg_vars_str = ", ".join(map(str, deg_vars))
+
       to_on_noise = float(gene_timing_params.get("toOn", default_timings["toOn"]))
       to_off_noise = float(gene_timing_params.get("toOff", default_timings["toOff"]))
       noise_t = float(gene_timing_params.get("noise_time", default_timings["noise_time"]))
 
-      act_time = max(0.0, act_time); act_var = max(0.0, act_var)
-      deg_time = max(0.0, deg_time) 
-      deg_var = max(0.0, deg_var)
-      to_on_noise = max(0.0, min(1.0, to_on_noise)) 
-      to_off_noise = max(0.0, min(1.0, to_off_noise)) 
-      noise_t = max(0.0, noise_t)
-
+    # Ensamblar el bloque del gen con los nuevos strings
     gro_content_lines.extend([
       f'genes([',
       f'  name := {gene_gro_name},',
@@ -858,8 +814,8 @@ def generate_gro_file(simulation_params, gene_definitions_list, qs_actions_map_d
       f'    transcription_factors := {{{tf_list_str}}},',
       f'    noise := [toOn := {to_on_noise}, toOff := {to_off_noise}, noise_time := {noise_t}]',
       f'  ],',
-      f'  prot_act_times := [times := {{{act_time}}}, variabilities := {{{act_var}}}],',
-      f'  prot_deg_times := [times := {{{deg_time}}}, variabilities := {{{deg_var}}}]',
+      f'  prot_act_times := [times := {{{act_times_str}}}, variabilities := {{{act_vars_str}}}],',
+      f'  prot_deg_times := [times := {{{deg_times_str}}}, variabilities := {{{deg_vars_str}}}]',
       f']);\n'
     ])
 
@@ -1041,7 +997,7 @@ def generate_gro_file(simulation_params, gene_definitions_list, qs_actions_map_d
   gro_content_lines.extend(main_program_block)
   gro_content_lines.append("")
 
-  # --- Write to .gro File ---
+  # Write to .gro File
   with open(output_file_path, 'w', encoding='utf-8') as gro_file_handle:
     gro_file_handle.write("\n".join(gro_content_lines))
 
