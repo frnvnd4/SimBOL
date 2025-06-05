@@ -103,41 +103,54 @@ def display_form(sbol_data):
   all_genes_boxes = []
   for gene in genes_detected:
     gene_name_key = gene["name"].strip('"')
-    proteins_for_gene = {protein.strip('"') for protein in gene["proteins"]}
+    proteins_for_gene = sorted(list({p.strip('"') for p in gene["proteins"]}))
 
-    gene_widgets[gene_name_key] = {
-      "act_time": widgets.FloatText(description="Act. Time:", value=15.0, layout=content_widget_layout_small, style={'description_width': 'initial'}),
-      "act_var": widgets.FloatText(description="Act. Var.:", value=1.0, layout=content_widget_layout_small, style={'description_width': 'initial'}),
-      "deg_time": widgets.FloatText(description="Deg. Time:", value=20.0, layout=content_widget_layout_small, style={'description_width': 'initial'}),
-      "deg_var": widgets.FloatText(description="Deg. Var.:", value=1.0, layout=content_widget_layout_small, style={'description_width': 'initial'}),
+    protein_params_widgets = {}
+    protein_timing_vbox = widgets.VBox([])
+
+    if proteins_for_gene:
+      protein_timing_vbox.children += (widgets.Label("Timing (Activation/Degradation, minutes):"),)
+    
+    for protein_id in proteins_for_gene:
+      desc_layout = widgets.Layout(width='auto', min_width='120px')
+      act_time_w = widgets.FloatText(description=f"Act. Time ({protein_id}):", value=15.0, layout=desc_layout, style={'description_width': 'initial'})
+      act_var_w = widgets.FloatText(description="Var.:", value=1.0, layout=content_widget_layout_small, style={'description_width': 'initial'})
+      deg_time_w = widgets.FloatText(description=f"Deg. Time ({protein_id}):", value=20.0, layout=desc_layout, style={'description_width': 'initial'})
+      deg_var_w = widgets.FloatText(description="Var.:", value=1.0, layout=content_widget_layout_small, style={'description_width': 'initial'})
+
+      protein_params_widgets[protein_id] = {
+        "act_time": act_time_w, "act_var": act_var_w,
+        "deg_time": deg_time_w, "deg_var": deg_var_w
+      }
+      
+      protein_hbox = widgets.HBox([act_time_w, act_var_w, create_spacer(), deg_time_w, deg_var_w], layout=widgets.Layout(width='100%', justify_content='flex-start', align_items='center', margin='2px 0'))
+      protein_timing_vbox.children += (protein_hbox,)
+
+    noise_widgets = {
       "toOn": widgets.FloatSlider(description="P(noise ON):", min=0.0, max=1.0, step=0.01, value=0.0, layout=content_widget_layout_medium, style={'description_width': 'initial'}),
       "toOff": widgets.FloatSlider(description="P(noise Off):", min=0.0, max=1.0, step=0.01, value=0.0, layout=content_widget_layout_medium, style={'description_width': 'initial'}),
       "noise_time": widgets.FloatText(description="Noise Act. Time:", value=100.0, layout=content_widget_layout_medium, style={'description_width': 'initial'})
     }
-
-    timing_params_hbox = widgets.HBox([
-      gene_widgets[gene_name_key]["act_time"], create_spacer(),
-      gene_widgets[gene_name_key]["act_var"], create_spacer(),
-      gene_widgets[gene_name_key]["deg_time"], create_spacer(),
-      gene_widgets[gene_name_key]["deg_var"]
-    ], layout=widgets.Layout(width='100%', justify_content='flex-start', align_items='center'))
-
-    timing_box = widgets.VBox([timing_params_hbox], layout=widgets.Layout(width='100%'))
-
     noise_params_hbox = widgets.HBox([
-      gene_widgets[gene_name_key]["noise_time"], create_spacer(),
-      gene_widgets[gene_name_key]["toOn"], create_spacer(),
-      gene_widgets[gene_name_key]["toOff"]
+      noise_widgets["noise_time"], create_spacer(),
+      noise_widgets["toOn"], create_spacer(),
+      noise_widgets["toOff"]
     ], layout=widgets.Layout(width='100%', justify_content='flex-start', align_items='center'))
-
+    
+    gene_widgets[gene_name_key] = {
+        "protein_params": protein_params_widgets,
+        "proteins_order": proteins_for_gene,
+        "noise_params": noise_widgets
+    }
     gene_info_html = f"<b>Gene: {gene_name_key}</b> (Produces: {', '.join(proteins_for_gene)})"
     gene_box = widgets.VBox([
       widgets.HTML(value=gene_info_html),
-      widgets.Label("Timing (Activation/Degradation, minutes):"), timing_box,
-      widgets.Label("Noise Parameters:"), noise_params_hbox,
+      protein_timing_vbox,
+      widgets.Label("Noise Parameters:"),
+      noise_params_hbox,
     ], layout=widgets.Layout(border='1px dashed lightgray', margin='5px 0', padding='5px', width='100%'))
     all_genes_boxes.append(gene_box)
-
+    
   genes_section_box = widgets.VBox([widgets.HTML(value="<h2>Gene Parameters</h2>")] + all_genes_boxes,
                                    layout=widgets.Layout(border='1px solid lightgray', margin='10px 0', padding='10px', width='100%'))
 
@@ -600,7 +613,7 @@ def display_form(sbol_data):
   # Save Button and Output Area 
   save_button = widgets.Button(description="Save Parameters", button_style='success', icon='save')
   output_area = widgets.Output()
-  parameters_dict = {} # Dictionary to store all parameters
+  parameters_dict = {}
 
   def save_parameters_callback(button_click_event):
     """
@@ -721,7 +734,34 @@ def display_form(sbol_data):
 
     # Save gene parameters
     for gene_key_str, widgets_collection in gene_widgets.items():
-      parameters_dict["gene_parameters"][gene_key_str] = {key: widget.value for key, widget in widgets_collection.items()}
+      gene_params = {}
+      protein_params_w = widgets_collection.get("protein_params", {})
+
+      act_times = []
+      act_vars = []
+      deg_times = []
+      deg_vars = []
+
+      for protein_id in widgets_collection.get("proteins_order", []):
+        if protein_id in protein_params_w:
+          params = protein_params_w[protein_id]
+          act_times.append(params["act_time"].value)
+          act_vars.append(params["act_var"].value)
+          deg_times.append(params["deg_time"].value)
+          deg_vars.append(params["deg_var"].value)
+
+      gene_params["act_times"] = act_times
+      gene_params["act_vars"] = act_vars
+      gene_params["deg_times"] = deg_times
+      gene_params["deg_vars"] = deg_vars
+
+      noise_params_w = widgets_collection.get("noise_params", {})
+      if noise_params_w:
+        gene_params["toOn"] = noise_params_w["toOn"].value
+        gene_params["toOff"] = noise_params_w["toOff"].value
+        gene_params["noise_time"] = noise_params_w["noise_time"].value
+
+      parameters_dict["gene_parameters"][gene_key_str] = gene_params
 
     # Save signal parameters
     for chem_name_orig, widgets_chem_collection in signal_widgets_dict.items():
