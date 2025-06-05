@@ -721,7 +721,6 @@ def extract_signal_definitions(ed_definitions_list, user_signal_parameters):
       original_signal_name = ed_item.get("name")
       normalized_signal_id = normalize_signal_name(original_signal_name)
       if original_signal_name and normalized_signal_id:
-        # Get parameters using the original name, as keys in user_signal_parameters
         params_for_signal = user_signal_parameters.get(original_signal_name, {"kdiff": 1.0, "kdeg": 0.1}) 
         diffusion_rate = params_for_signal.get("kdiff", 1.0)
         degradation_rate = params_for_signal.get("kdeg", 0.1)
@@ -763,19 +762,12 @@ def generate_qs_signal_sensing_actions(qs_action_setup_map, user_signal_paramete
     list: A list of strings, each representing an `s_get_QS` action for GRO.
   """
   sensing_actions = []
-  # qs_action_setup_map has: norm_chem_name -> (QS_Protein_ID, config_type, original_chem_name)
   for _normalized_chem_name, (qs_protein_id, config_type, original_signal_id) in qs_action_setup_map.items():
-    # Only generate s_get_QS for signals that are meant to be sensed from UI parameters
-    # NCB_REACTANT types are handled by NCB aux genes, not direct s_get_QS.
-    if config_type == "SENSING_CONFIG_FROM_UI": # This was the key from extract_genes
-      # Use original_signal_id to look up UI-defined parameters (Symbol, Threshold)
+    if config_type in ["SENSING_CONFIG_FROM_UI", "SENSING_CONFIG_FROM_UI_NCB_REACTANT"]: 
       signal_ui_params = user_signal_parameters.get(original_signal_id, {})
-      operator_symbol = signal_ui_params.get("Symbol_getQS", ">") # Default to ">"
-      threshold_value = signal_ui_params.get("Threshold_getQS", "0.3") # Default threshold
-
-      # Use tostring() for the signal name in GRO, with its normalized form
+      operator_symbol = signal_ui_params.get("Symbol_getQS", ">") 
+      threshold_value = signal_ui_params.get("Threshold_getQS", "0.3") 
       signal_gro_id_tostring = f"tostring({normalize_signal_name(original_signal_id)})"
-
       sensing_actions.append(f'action({{}}, "s_get_QS", {{{signal_gro_id_tostring}, "{operator_symbol}", "{threshold_value}", "{qs_protein_id}"}});')
   return sensing_actions
 
@@ -805,7 +797,6 @@ def generate_gro_file(simulation_params, gene_definitions_list, qs_actions_map_d
     gro_content_lines.append("// Signal Diffusion Parameters")
     gro_content_lines.append('set("signals", 1.0); // Enable signal module')
     gro_content_lines.append('set("signals_draw", 1.0); // Enable signal drawing')
-    # Example grid setup, consider making this configurable via simulation_params if needed
     gro_content_lines.append('grid("continuous", "gro_original", 10, 10, 8); // Grid (type, diffusion_method, length, cell_size, neighborhood_depth)\n')
     gro_content_lines.append("// Signal Definitions (kdiff = diffusion rate, kdeg = degradation rate)")
     gro_content_lines.extend(signal_definitions_list)
@@ -828,7 +819,6 @@ def generate_gro_file(simulation_params, gene_definitions_list, qs_actions_map_d
       deg_time, deg_var = fixed_gene_params["deg_time"], fixed_gene_params["deg_var"]
       to_on_noise, to_off_noise, noise_t = fixed_gene_params["toOn"], fixed_gene_params["toOff"], fixed_gene_params["noise_time"]
     else:
-      # Default gene timing parameters if not found in simulation_params
       default_timings = {"act_time": 10.0, "act_var": 1.0, "deg_time": 20.0, "deg_var": 1.0,
                          "toOn": 0.0, "toOff": 0.0, "noise_time": 100.0}
       gene_timing_params = simulation_params.get("gene_parameters", {}).get(gene_name_key_for_params, default_timings)
@@ -844,8 +834,8 @@ def generate_gro_file(simulation_params, gene_definitions_list, qs_actions_map_d
       act_time = max(0.0, act_time); act_var = max(0.0, act_var)
       deg_time = max(0.0, deg_time) 
       deg_var = max(0.0, deg_var)
-      to_on_noise = max(0.0, min(1.0, to_on_noise)) # Probability [0,1]
-      to_off_noise = max(0.0, min(1.0, to_off_noise)) # Probability [0,1]
+      to_on_noise = max(0.0, min(1.0, to_on_noise)) 
+      to_off_noise = max(0.0, min(1.0, to_off_noise)) 
       noise_t = max(0.0, noise_t)
 
     gro_content_lines.extend([
