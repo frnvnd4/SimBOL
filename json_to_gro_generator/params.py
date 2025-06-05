@@ -1,6 +1,4 @@
-from json_to_gro_generator.gro_file_compiler import (
-  extract_signal_definitions, extract_degradation_actions
-)
+from json_to_gro_generator.gro_file_compiler import extract_signal_definitions
 
 def prepare_parameters_and_data(sbol_data, parameters):
   """
@@ -17,20 +15,12 @@ def prepare_parameters_and_data(sbol_data, parameters):
     tuple: A tuple containing:
       - signal_definitions (list): List of strings defining signals for GRO.
       - protein_actions_map (dict): Dictionary mapping protein IDs to colors for paint actions.
-      - degradation_actions_list (list): List of tuples representing degradation actions.
   """
   signal_definitions = extract_signal_definitions(
     sbol_data["ED"],
     parameters["signal_parameters"]
   )
-
-  degradation_actions_list = extract_degradation_actions(
-    sbol_data["interactions"],
-    sbol_data["ED"],
-    sbol_data["hierarchy"],
-    sbol_data["components"]
-  )
-
+  
   protein_actions_map = {
     # Green
     "BBa_E0040": "green",   
@@ -118,6 +108,5 @@ def prepare_parameters_and_data(sbol_data, parameters):
 
   return (
     signal_definitions,
-    protein_actions_map,
-    degradation_actions_list
+    protein_actions_map
   )
