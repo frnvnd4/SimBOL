@@ -1,0 +1,233 @@
+{
+    "components": [
+        {
+            "displayId": "BBa_K909012",
+            "role": "Promoter",
+            "type": "DNA"
+        },
+        {
+            "displayId": "BBa_B0034",
+            "role": "RBS",
+            "type": "DNA"
+        },
+        {
+            "displayId": "BBa_C0050",
+            "role": "CDS",
+            "type": "DNA"
+        },
+        {
+            "displayId": "BBa_0005",
+            "role": "Engineered-Region",
+            "type": "DNA"
+        },
+        {
+            "displayId": "BBa_C0040",
+            "role": "CDS",
+            "type": "DNA"
+        },
+        {
+            "displayId": "BBa_J23100",
+            "role": "Promoter",
+            "type": "DNA"
+        },
+        {
+            "displayId": "BBa_0005_system",
+            "role": "Unknown",
+            "type": "Functional Entity"
+        },
+        {
+            "displayId": "BBa_C0012",
+            "role": "CDS",
+            "type": "DNA"
+        },
+        {
+            "displayId": "BBa_B0015",
+            "role": "Terminator",
+            "type": "DNA"
+        },
+        {
+            "displayId": "BBa_E0040",
+            "role": "CDS",
+            "type": "DNA"
+        },
+        {
+            "displayId": "BBa_R0040",
+            "role": "Promoter",
+            "type": "DNA"
+        }
+    ],
+    "ED": [
+        {
+            "displayId": "ExternallyDefined1",
+            "name": "TetR",
+            "type": "Protein"
+        },
+        {
+            "displayId": "ExternallyDefined4",
+            "name": "GFP",
+            "type": "Protein"
+        },
+        {
+            "displayId": "ExternallyDefined2",
+            "name": "cI",
+            "type": "Protein"
+        },
+        {
+            "displayId": "ExternallyDefined5",
+            "name": "aTc",
+            "type": "Simple chemical"
+        },
+        {
+            "displayId": "ExternallyDefined3",
+            "name": "LacI",
+            "type": "Protein"
+        }
+    ],
+    "hierarchy": {
+        "LacI-GFP Operon": {
+            "components": [
+                "BBa_K909012",
+                "BBa_B0034",
+                "BBa_C0012",
+                "BBa_E0040",
+                "BBa_B0015"
+            ],
+            "constitutive": false
+        },
+        "TetR Operon": {
+            "components": [
+                "BBa_J23100",
+                "BBa_B0034",
+                "BBa_C0040",
+                "BBa_B0015"
+            ],
+            "constitutive": true
+        },
+        "cI Operon": {
+            "components": [
+                "BBa_R0040",
+                "BBa_B0034",
+                "BBa_C0050",
+                "BBa_B0015"
+            ],
+            "constitutive": false
+        }
+    },
+    "interactions": [
+        {
+            "type": "Genetic Production",
+            "participants": [
+                {
+                    "role": "Product",
+                    "participant": "cI"
+                },
+                {
+                    "role": "Promoter",
+                    "participant": "BBa_R0040"
+                },
+                {
+                    "role": "Template",
+                    "participant": "BBa_C0050"
+                }
+            ]
+        },
+        {
+            "type": "Genetic Production",
+            "participants": [
+                {
+                    "role": "Product",
+                    "participant": "LacI"
+                },
+                {
+                    "role": "Promoter",
+                    "participant": "BBa_K909012"
+                },
+                {
+                    "role": "Template",
+                    "participant": "BBa_C0012"
+                }
+            ]
+        },
+        {
+            "type": "Genetic Production",
+            "participants": [
+                {
+                    "role": "Product",
+                    "participant": "GFP"
+                },
+                {
+                    "role": "Promoter",
+                    "participant": "BBa_K909012"
+                },
+                {
+                    "role": "Template",
+                    "participant": "BBa_E0040"
+                }
+            ]
+        },
+        {
+            "type": "Inhibition",
+            "participants": [
+                {
+                    "role": "Inhibitor",
+                    "participant": "aTc"
+                },
+                {
+                    "role": "Inhibited",
+                    "participant": "TetR"
+                }
+            ]
+        },
+        {
+            "type": "Genetic Production",
+            "participants": [
+                {
+                    "role": "Product",
+                    "participant": "TetR"
+                },
+                {
+                    "role": "Promoter",
+                    "participant": "BBa_J23100"
+                },
+                {
+                    "role": "Template",
+                    "participant": "BBa_C0040"
+                }
+            ]
+        },
+        {
+            "type": "Inhibition",
+            "participants": [
+                {
+                    "role": "Inhibitor",
+                    "participant": "cI"
+                },
+                {
+                    "role": "Inhibitor",
+                    "participant": "LacI"
+                },
+                {
+                    "role": "Inhibited",
+                    "participant": "BBa_K909012"
+                }
+            ]
+        },
+        {
+            "type": "Inhibition",
+            "participants": [
+                {
+                    "role": "Inhibitor",
+                    "participant": "TetR"
+                },
+                {
+                    "role": "Inhibited",
+                    "participant": "BBa_R0040"
+                }
+            ]
+        }
+    ],
+    "orientation": [],
+    "equivalence": [],
+    "replacements": [],
+    "spatial_relations": []
+}

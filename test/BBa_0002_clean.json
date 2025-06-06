@@ -1,0 +1,147 @@
+{
+    "components": [
+        {
+            "displayId": "BBa_E1010",
+            "role": "CDS",
+            "type": "DNA"
+        },
+        {
+            "displayId": "BBa_0002_system",
+            "role": "Unknown",
+            "type": "Functional Entity"
+        },
+        {
+            "displayId": "BBa_R0040",
+            "role": "Promoter",
+            "type": "DNA"
+        },
+        {
+            "displayId": "BBa_0002",
+            "role": "Engineered-Region",
+            "type": "DNA"
+        },
+        {
+            "displayId": "BBa_B0034",
+            "role": "RBS",
+            "type": "DNA"
+        },
+        {
+            "displayId": "BBa_C0040",
+            "role": "CDS",
+            "type": "DNA"
+        },
+        {
+            "displayId": "BBa_B0015",
+            "role": "Terminator",
+            "type": "DNA"
+        },
+        {
+            "displayId": "BBa_J23101",
+            "role": "Promoter",
+            "type": "DNA"
+        }
+    ],
+    "ED": [
+        {
+            "displayId": "ExternallyDefined1",
+            "name": "RFP",
+            "type": "Protein"
+        },
+        {
+            "displayId": "ExternallyDefined2",
+            "name": "TetR",
+            "type": "Protein"
+        },
+        {
+            "displayId": "ExternallyDefined3",
+            "name": "aTc",
+            "type": "Simple chemical"
+        }
+    ],
+    "hierarchy": {
+        "RFPOperon": {
+            "components": [
+                "BBa_R0040",
+                "BBa_B0034",
+                "BBa_E1010",
+                "BBa_B0015"
+            ],
+            "constitutive": false
+        },
+        "TetROperon": {
+            "components": [
+                "BBa_J23101",
+                "BBa_B0034",
+                "BBa_C0040",
+                "BBa_B0015"
+            ],
+            "constitutive": true
+        }
+    },
+    "interactions": [
+        {
+            "type": "Inhibition",
+            "participants": [
+                {
+                    "role": "Inhibitor",
+                    "participant": "TetR"
+                },
+                {
+                    "role": "Inhibited",
+                    "participant": "BBa_R0040"
+                }
+            ]
+        },
+        {
+            "type": "Inhibition",
+            "participants": [
+                {
+                    "role": "Inhibitor",
+                    "participant": "aTc"
+                },
+                {
+                    "role": "Inhibited",
+                    "participant": "TetR"
+                }
+            ]
+        },
+        {
+            "type": "Genetic Production",
+            "participants": [
+                {
+                    "role": "Product",
+                    "participant": "TetR"
+                },
+                {
+                    "role": "Promoter",
+                    "participant": "BBa_J23101"
+                },
+                {
+                    "role": "Template",
+                    "participant": "BBa_C0040"
+                }
+            ]
+        },
+        {
+            "type": "Genetic Production",
+            "participants": [
+                {
+                    "role": "Product",
+                    "participant": "RFP"
+                },
+                {
+                    "role": "Promoter",
+                    "participant": "BBa_R0040"
+                },
+                {
+                    "role": "Template",
+                    "participant": "BBa_E1010"
+                }
+            ]
+        }
+    ],
+    "orientation": [],
+    "equivalence": [],
+    "replacements": [],
+    "spatial_relations": []
+}

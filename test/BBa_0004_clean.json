@@ -1,0 +1,134 @@
+{
+    "components": [
+        {
+            "displayId": "BBa_R0011",
+            "role": "Promoter",
+            "type": "DNA"
+        },
+        {
+            "displayId": "BBa_E0040",
+            "role": "CDS",
+            "type": "DNA"
+        },
+        {
+            "displayId": "BBa_B0034",
+            "role": "RBS",
+            "type": "DNA"
+        },
+        {
+            "displayId": "BBa_B0015",
+            "role": "Terminator",
+            "type": "DNA"
+        },
+        {
+            "displayId": "BBa_0004_system",
+            "role": "Unknown",
+            "type": "Functional Entity"
+        },
+        {
+            "displayId": "BBa_0004",
+            "role": "Engineered-Region",
+            "type": "DNA"
+        },
+        {
+            "displayId": "BBa_C0012",
+            "role": "CDS",
+            "type": "DNA"
+        }
+    ],
+    "ED": [
+        {
+            "displayId": "ExternallyDefined1",
+            "name": "LacI",
+            "type": "Protein"
+        },
+        {
+            "displayId": "ExternallyDefined3",
+            "name": "IPTG",
+            "type": "Simple chemical"
+        },
+        {
+            "displayId": "ExternallyDefined2",
+            "name": "GFP",
+            "type": "Protein"
+        }
+    ],
+    "hierarchy": {
+        "Operon 1": {
+            "components": [
+                "BBa_R0011",
+                "BBa_B0034",
+                "BBa_C0012",
+                "BBa_E0040",
+                "BBa_B0015"
+            ],
+            "constitutive": false
+        }
+    },
+    "interactions": [
+        {
+            "type": "Inhibition",
+            "participants": [
+                {
+                    "role": "Inhibitor",
+                    "participant": "LacI"
+                },
+                {
+                    "role": "Inhibited",
+                    "participant": "BBa_R0011"
+                }
+            ]
+        },
+        {
+            "type": "Genetic Production",
+            "participants": [
+                {
+                    "role": "Product",
+                    "participant": "GFP"
+                },
+                {
+                    "role": "Promoter",
+                    "participant": "BBa_R0011"
+                },
+                {
+                    "role": "Template",
+                    "participant": "BBa_E0040"
+                }
+            ]
+        },
+        {
+            "type": "Genetic Production",
+            "participants": [
+                {
+                    "role": "Product",
+                    "participant": "LacI"
+                },
+                {
+                    "role": "Promoter",
+                    "participant": "BBa_R0011"
+                },
+                {
+                    "role": "Template",
+                    "participant": "BBa_C0012"
+                }
+            ]
+        },
+        {
+            "type": "Inhibition",
+            "participants": [
+                {
+                    "role": "Inhibitor",
+                    "participant": "IPTG"
+                },
+                {
+                    "role": "Inhibited",
+                    "participant": "LacI"
+                }
+            ]
+        }
+    ],
+    "orientation": [],
+    "equivalence": [],
+    "replacements": [],
+    "spatial_relations": []
+}

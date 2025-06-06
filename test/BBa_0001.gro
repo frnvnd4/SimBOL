@@ -1,0 +1,35 @@
+include gro
+
+// Global Simulation Parameters
+set ("dt", 0.1 ); // Timestep in minutes
+set ("population_max", 20000 ); // Maximum cell population
+
+// Gene Definitions
+genes([
+  name := "Operon_1",
+  proteins := {"BBa_E0040"},
+  promoter := [function := "TRUE",
+    transcription_factors := {},
+    noise := [toOn := 0.0, toOff := 0.0, noise_time := 100.0]
+  ],
+  prot_act_times := [times := {0.0}, variabilities := {0.0}],
+  prot_deg_times := [times := {0.0}, variabilities := {0.0}]
+]);
+
+// Plasmid Definitions
+plasmids_genes([ p1 := {"Operon_1"} ]);
+
+// Cell Painting Actions (based on protein presence)
+action({"BBa_E0040"}, "paint", {"170", "0", "0", "0"});
+action({"-BBa_E0040"}, "paint", {"-72", "0", "0", "0"});
+
+program p() := {
+  skip();
+};
+
+program main() := {
+  set("ecoli_growth_rate", 0.03465735902799726);
+
+  // Initial Cell Population(s) Setup
+  c_ecolis(100, 0.0, 0.0, 100.0, {"p1"}, program p());
+};

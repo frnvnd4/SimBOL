@@ -1,0 +1,728 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rdf:RDF
+   xmlns:ns1="https://parts.igem.org/BBa_E1010#"
+   xmlns:ns2="https://parts.igem.org/BBa_R0040#"
+   xmlns:ns3="https://parts.igem.org/BBa_B0034#"
+   xmlns:ns4="https://parts.igem.org/BBa_B0015#"
+   xmlns:ns5="https://parts.igem.org/BBa_C0040#"
+   xmlns:ns6="https://parts.igem.org/BBa_J23101#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:sbol="http://sbols.org/v3#"
+>
+  <rdf:Description rdf:about="https://parts.igem.org/BBa_0002_system/LocalSubComponent3">
+    <sbol:displayId>LocalSubComponent3</sbol:displayId>
+    <sbol:name>RFPOperon</sbol:name>
+    <rdf:type rdf:resource="http://sbols.org/v3#LocalSubComponent"/>
+    <sbol:role rdf:resource="https://identifiers.org/SO:0000804"/>
+    <sbol:type rdf:resource="https://identifiers.org/SBO:0000251"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://parts.igem.org/BBa_0002/SubComponent2">
+    <sbol:displayId>SubComponent2</sbol:displayId>
+    <sbol:name>BBa_B0034_1</sbol:name>
+    <rdf:type rdf:resource="http://sbols.org/v3#SubComponent"/>
+    <sbol:instanceOf rdf:resource="https://parts.igem.org/BBa_B0034"/>
+    <sbol:hasLocation rdf:resource="https://parts.igem.org/BBa_0002/SubComponent2/Range1"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://parts.igem.org/BBa_0002/SubComponent7">
+    <sbol:displayId>SubComponent7</sbol:displayId>
+    <sbol:name>BBa_E1010_1</sbol:name>
+    <rdf:type rdf:resource="http://sbols.org/v3#SubComponent"/>
+    <sbol:instanceOf rdf:resource="https://parts.igem.org/BBa_E1010"/>
+    <sbol:hasLocation rdf:resource="https://parts.igem.org/BBa_0002/SubComponent7/Range1"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://parts.igem.org/BBa_0002_system/Constraint9">
+    <sbol:displayId>Constraint9</sbol:displayId>
+    <rdf:type rdf:resource="http://sbols.org/v3#Constraint"/>
+    <sbol:restriction rdf:resource="http://sbols.org/v3#contains"/>
+    <sbol:subject rdf:resource="https://parts.igem.org/BBa_0002_system/LocalSubComponent3"/>
+    <sbol:object rdf:resource="https://parts.igem.org/BBa_0002_system/ComponentReference5"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://parts.igem.org/BBa_C0040_seq">
+    <sbol:displayId>BBa_C0040_seq</sbol:displayId>
+    <rdf:type rdf:resource="http://sbols.org/v3#Sequence"/>
+    <sbol:hasNamespace rdf:resource="https://parts.igem.org/"/>
+    <sbol:elements>atgtccagattagataaaagtaaagtgattaacagcgcattagagctgcttaatgaggtcggaatcgaaggtttaacaacccgtaaactcgcccagaagctaggtgtagagcagcctacattgtattggcatgtaaaaaataagcgggctttgctcgacgccttagccattgagatgttagataggcaccatactcacttttgccctttagaaggggaaagctggcaagattttttacgtaataacgctaaaagttttagatgtgctttactaagtcatcgcgatggagcaaaagtacatttaggtacacggcctacagaaaaacagtatgaaactctcgaaaatcaattagcctttttatgccaacaaggtttttcactagagaatgcattatatgcactcagcgctgtggggcattttactttaggttgcgtattggaagatcaagagcatcaagtcgctaaagaagaaagggaaacacctactactgatagtatgccgccattattacgacaagctatcgaattatttgatcaccaaggtgcagagccagccttcttattcggccttgaattgatcatatgcggattagaaaaacaacttaaatgtgaaagtgggtccgctgcaaacgacgaaaactacgctttagtagcttaataacactgatagtgctagtgtagatcac</sbol:elements>
+    <sbol:encoding rdf:resource="https://identifiers.org/edam:format_1207"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://parts.igem.org/BBa_E1010">
+    <sbol:displayId>BBa_E1010</sbol:displayId>
+    <sbol:name>BBa_E1010_1</sbol:name>
+    <sbol:description> **highly** engineered mutant of red fluorescent protein from Discosoma striata (coral)</sbol:description>
+    <rdf:type rdf:resource="http://sbols.org/v3#Component"/>
+    <sbol:hasNamespace rdf:resource="https://parts.igem.org/"/>
+    <sbol:type rdf:resource="https://identifiers.org/SBO:0000251"/>
+    <sbol:role rdf:resource="https://identifiers.org/SO:0000316"/>
+    <sbol:hasSequence rdf:resource="https://parts.igem.org/BBa_E1010_seq"/>
+    <ns1:owning_group_id>7</ns1:owning_group_id>
+    <ns1:status>Available</ns1:status>
+    <ns1:dominant>false</ns1:dominant>
+    <ns1:discontinued>false</ns1:discontinued>
+    <ns1:part_status>Released HQ 2013</ns1:part_status>
+    <ns1:sample_status>In stock</ns1:sample_status>
+    <ns1:created>2004-07-28</ns1:created>
+    <ns1:modified>2021-09-08 20:22:45</ns1:modified>
+    <ns1:m_user_id>0</ns1:m_user_id>
+    <ns1:experience>593</ns1:experience>
+    <ns1:bookmark>false</ns1:bookmark>
+    <ns1:owner_id>52</ns1:owner_id>
+    <ns1:group_u_list>_11_1_</ns1:group_u_list>
+    <ns1:mutableNotes>TAATAA double stop codon added (DE).&#13;
+&#13;
+Four silent mutations made to remove three EcoRI sites and one PstI site: A28G, A76G, A349G, G337A.</ns1:mutableNotes>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://parts.igem.org/BBa_0002_system/Constraint12">
+    <sbol:displayId>Constraint12</sbol:displayId>
+    <rdf:type rdf:resource="http://sbols.org/v3#Constraint"/>
+    <sbol:restriction rdf:resource="http://sbols.org/v3#contains"/>
+    <sbol:subject rdf:resource="https://parts.igem.org/BBa_0002_system/LocalSubComponent3"/>
+    <sbol:object rdf:resource="https://parts.igem.org/BBa_0002_system/ComponentReference8"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://parts.igem.org/BBa_0002_system">
+    <sbol:displayId>BBa_0002_system</sbol:displayId>
+    <rdf:type rdf:resource="http://sbols.org/v3#Component"/>
+    <sbol:hasNamespace rdf:resource="https://parts.igem.org/"/>
+    <sbol:type rdf:resource="https://identifiers.org/SBO:0000241"/>
+    <sbol:hasFeature rdf:resource="https://parts.igem.org/BBa_0002_system/SubComponent1"/>
+    <sbol:hasFeature rdf:resource="https://parts.igem.org/BBa_0002_system/LocalSubComponent1"/>
+    <sbol:hasFeature rdf:resource="https://parts.igem.org/BBa_0002_system/ComponentReference1"/>
+    <sbol:hasFeature rdf:resource="https://parts.igem.org/BBa_0002_system/ComponentReference2"/>
+    <sbol:hasFeature rdf:resource="https://parts.igem.org/BBa_0002_system/ComponentReference3"/>
+    <sbol:hasFeature rdf:resource="https://parts.igem.org/BBa_0002_system/ComponentReference4"/>
+    <sbol:hasFeature rdf:resource="https://parts.igem.org/BBa_0002_system/LocalSubComponent2"/>
+    <sbol:hasFeature rdf:resource="https://parts.igem.org/BBa_0002_system/LocalSubComponent3"/>
+    <sbol:hasFeature rdf:resource="https://parts.igem.org/BBa_0002_system/ComponentReference5"/>
+    <sbol:hasFeature rdf:resource="https://parts.igem.org/BBa_0002_system/ComponentReference6"/>
+    <sbol:hasFeature rdf:resource="https://parts.igem.org/BBa_0002_system/ComponentReference7"/>
+    <sbol:hasFeature rdf:resource="https://parts.igem.org/BBa_0002_system/ComponentReference8"/>
+    <sbol:hasFeature rdf:resource="https://parts.igem.org/BBa_0002_system/ExternallyDefined1"/>
+    <sbol:hasFeature rdf:resource="https://parts.igem.org/BBa_0002_system/ExternallyDefined2"/>
+    <sbol:hasFeature rdf:resource="https://parts.igem.org/BBa_0002_system/ExternallyDefined3"/>
+    <sbol:hasInteraction rdf:resource="https://parts.igem.org/BBa_0002_system/Interaction1"/>
+    <sbol:hasInteraction rdf:resource="https://parts.igem.org/BBa_0002_system/Interaction2"/>
+    <sbol:hasInteraction rdf:resource="https://parts.igem.org/BBa_0002_system/Interaction3"/>
+    <sbol:hasInteraction rdf:resource="https://parts.igem.org/BBa_0002_system/Interaction4"/>
+    <sbol:hasConstraint rdf:resource="https://parts.igem.org/BBa_0002_system/Constraint1"/>
+    <sbol:hasConstraint rdf:resource="https://parts.igem.org/BBa_0002_system/Constraint2"/>
+    <sbol:hasConstraint rdf:resource="https://parts.igem.org/BBa_0002_system/Constraint3"/>
+    <sbol:hasConstraint rdf:resource="https://parts.igem.org/BBa_0002_system/Constraint4"/>
+    <sbol:hasConstraint rdf:resource="https://parts.igem.org/BBa_0002_system/Constraint5"/>
+    <sbol:hasConstraint rdf:resource="https://parts.igem.org/BBa_0002_system/Constraint6"/>
+    <sbol:hasConstraint rdf:resource="https://parts.igem.org/BBa_0002_system/Constraint7"/>
+    <sbol:hasConstraint rdf:resource="https://parts.igem.org/BBa_0002_system/Constraint8"/>
+    <sbol:hasConstraint rdf:resource="https://parts.igem.org/BBa_0002_system/Constraint9"/>
+    <sbol:hasConstraint rdf:resource="https://parts.igem.org/BBa_0002_system/Constraint10"/>
+    <sbol:hasConstraint rdf:resource="https://parts.igem.org/BBa_0002_system/Constraint11"/>
+    <sbol:hasConstraint rdf:resource="https://parts.igem.org/BBa_0002_system/Constraint12"/>
+    <sbol:hasConstraint rdf:resource="https://parts.igem.org/BBa_0002_system/Constraint13"/>
+    <sbol:hasConstraint rdf:resource="https://parts.igem.org/BBa_0002_system/Constraint14"/>
+    <sbol:hasConstraint rdf:resource="https://parts.igem.org/BBa_0002_system/Constraint15"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://parts.igem.org/BBa_R0040">
+    <sbol:displayId>BBa_R0040</sbol:displayId>
+    <sbol:name>BBa_R0040_1</sbol:name>
+    <sbol:description>TetR repressible promoter</sbol:description>
+    <rdf:type rdf:resource="http://sbols.org/v3#Component"/>
+    <sbol:hasNamespace rdf:resource="https://parts.igem.org/"/>
+    <sbol:type rdf:resource="https://identifiers.org/SBO:0000251"/>
+    <sbol:role rdf:resource="https://identifiers.org/SO:0000167"/>
+    <sbol:hasSequence rdf:resource="https://parts.igem.org/BBa_R0040_seq"/>
+    <ns2:owning_group_id>7</ns2:owning_group_id>
+    <ns2:status>Available</ns2:status>
+    <ns2:dominant>true</ns2:dominant>
+    <ns2:discontinued>false</ns2:discontinued>
+    <ns2:part_status>Released HQ 2013</ns2:part_status>
+    <ns2:sample_status>In stock</ns2:sample_status>
+    <ns2:created>2003-01-31</ns2:created>
+    <ns2:modified>2021-09-08 20:27:40</ns2:modified>
+    <ns2:m_user_id>0</ns2:m_user_id>
+    <ns2:experience>1081</ns2:experience>
+    <ns2:bookmark>false</ns2:bookmark>
+    <ns2:owner_id>24</ns2:owner_id>
+    <ns2:group_u_list>_1_</ns2:group_u_list>
+    <ns2:mutableNotes>&lt;P&gt; &lt;P&gt;BBa_R0040 TetR-Regulated Promoter is based on a cI promoter. It has been modified      to include two TetR binding sites and the BioBrick standard assembly head and tail restriction sites.&lt;P&gt;
+</ns2:mutableNotes>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://parts.igem.org/BBa_J23101_seq">
+    <sbol:displayId>BBa_J23101_seq</sbol:displayId>
+    <rdf:type rdf:resource="http://sbols.org/v3#Sequence"/>
+    <sbol:hasNamespace rdf:resource="https://parts.igem.org/"/>
+    <sbol:elements>tttacagctagctcagtcctaggtattatgctagc</sbol:elements>
+    <sbol:encoding rdf:resource="https://identifiers.org/edam:format_1207"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://parts.igem.org/BBa_0002_system/ExternallyDefined1">
+    <sbol:displayId>ExternallyDefined1</sbol:displayId>
+    <sbol:name>RFP</sbol:name>
+    <rdf:type rdf:resource="http://sbols.org/v3#ExternallyDefined"/>
+    <sbol:role rdf:resource="http://identifiers.org/GO:0003700"/>
+    <sbol:type rdf:resource="https://identifiers.org/SBO:0000252"/>
+    <sbol:definition rdf:resource="https://www.uniprot.org/uniprotkb/Q8ISF8/entry"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://parts.igem.org/BBa_0002/SubComponent5/Range1">
+    <sbol:displayId>Range1</sbol:displayId>
+    <rdf:type rdf:resource="http://sbols.org/v3#Range"/>
+    <sbol:hasSequence rdf:resource="https://parts.igem.org/BBa_0002_sequence"/>
+    <sbol:start rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">892</sbol:start>
+    <sbol:end rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">945</sbol:end>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://parts.igem.org/BBa_0002_system/ComponentReference7">
+    <sbol:displayId>ComponentReference7</sbol:displayId>
+    <rdf:type rdf:resource="http://sbols.org/v3#ComponentReference"/>
+    <sbol:inChildOf rdf:resource="https://parts.igem.org/BBa_0002_system/SubComponent1"/>
+    <sbol:refersTo rdf:resource="https://parts.igem.org/BBa_0002/SubComponent7"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://parts.igem.org/BBa_0002_system/ComponentReference6">
+    <sbol:displayId>ComponentReference6</sbol:displayId>
+    <rdf:type rdf:resource="http://sbols.org/v3#ComponentReference"/>
+    <sbol:inChildOf rdf:resource="https://parts.igem.org/BBa_0002_system/SubComponent1"/>
+    <sbol:refersTo rdf:resource="https://parts.igem.org/BBa_0002/SubComponent6"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://parts.igem.org/BBa_0002_system/Interaction2/Participation1">
+    <sbol:displayId>Participation1</sbol:displayId>
+    <rdf:type rdf:resource="http://sbols.org/v3#Participation"/>
+    <sbol:role rdf:resource="https://identifiers.org/SBO:0000011"/>
+    <sbol:participant rdf:resource="https://parts.igem.org/BBa_0002_system/ExternallyDefined1"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://parts.igem.org/BBa_0002">
+    <sbol:displayId>BBa_0002</sbol:displayId>
+    <sbol:name>BBa_0002_1</sbol:name>
+    <sbol:description>Simple inducible system</sbol:description>
+    <rdf:type rdf:resource="http://sbols.org/v3#Component"/>
+    <sbol:hasNamespace rdf:resource="https://parts.igem.org/"/>
+    <sbol:type rdf:resource="https://identifiers.org/SBO:0000251"/>
+    <sbol:role rdf:resource="https://identifiers.org/SO:0000804"/>
+    <sbol:hasSequence rdf:resource="https://parts.igem.org/BBa_0002_sequence"/>
+    <sbol:hasFeature rdf:resource="https://parts.igem.org/BBa_0002/SubComponent1"/>
+    <sbol:hasFeature rdf:resource="https://parts.igem.org/BBa_0002/SubComponent2"/>
+    <sbol:hasFeature rdf:resource="https://parts.igem.org/BBa_0002/SubComponent3"/>
+    <sbol:hasFeature rdf:resource="https://parts.igem.org/BBa_0002/SubComponent4"/>
+    <sbol:hasFeature rdf:resource="https://parts.igem.org/BBa_0002/SubComponent5"/>
+    <sbol:hasFeature rdf:resource="https://parts.igem.org/BBa_0002/SubComponent6"/>
+    <sbol:hasFeature rdf:resource="https://parts.igem.org/BBa_0002/SubComponent7"/>
+    <sbol:hasFeature rdf:resource="https://parts.igem.org/BBa_0002/SubComponent8"/>
+    <sbol:hasConstraint rdf:resource="https://parts.igem.org/BBa_0002/Constraint1"/>
+    <sbol:hasConstraint rdf:resource="https://parts.igem.org/BBa_0002/Constraint2"/>
+    <sbol:hasConstraint rdf:resource="https://parts.igem.org/BBa_0002/Constraint3"/>
+    <sbol:hasConstraint rdf:resource="https://parts.igem.org/BBa_0002/Constraint4"/>
+    <sbol:hasConstraint rdf:resource="https://parts.igem.org/BBa_0002/Constraint5"/>
+    <sbol:hasConstraint rdf:resource="https://parts.igem.org/BBa_0002/Constraint6"/>
+    <sbol:hasConstraint rdf:resource="https://parts.igem.org/BBa_0002/Constraint7"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://parts.igem.org/BBa_0002/Constraint7">
+    <sbol:displayId>Constraint7</sbol:displayId>
+    <rdf:type rdf:resource="http://sbols.org/v3#Constraint"/>
+    <sbol:restriction rdf:resource="http://sbols.org/v3#meets"/>
+    <sbol:subject rdf:resource="https://parts.igem.org/BBa_0002/SubComponent7"/>
+    <sbol:object rdf:resource="https://parts.igem.org/BBa_0002/SubComponent8"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://parts.igem.org/BBa_B0034">
+    <sbol:displayId>BBa_B0034</sbol:displayId>
+    <sbol:name>BBa_B0034_1</sbol:name>
+    <sbol:description>RBS (Elowitz 1999) -- defines RBS efficiency</sbol:description>
+    <rdf:type rdf:resource="http://sbols.org/v3#Component"/>
+    <sbol:hasNamespace rdf:resource="https://parts.igem.org/"/>
+    <sbol:type rdf:resource="https://identifiers.org/SBO:0000251"/>
+    <sbol:role rdf:resource="https://identifiers.org/SO:0000139"/>
+    <sbol:hasSequence rdf:resource="https://parts.igem.org/BBa_B0034_seq"/>
+    <ns3:owning_group_id>7</ns3:owning_group_id>
+    <ns3:status>Available</ns3:status>
+    <ns3:dominant>true</ns3:dominant>
+    <ns3:discontinued>false</ns3:discontinued>
+    <ns3:part_status>Released HQ 2013</ns3:part_status>
+    <ns3:sample_status>In stock</ns3:sample_status>
+    <ns3:created>2003-01-31</ns3:created>
+    <ns3:modified>2021-09-08 20:22:43</ns3:modified>
+    <ns3:m_user_id>0</ns3:m_user_id>
+    <ns3:experience>5428</ns3:experience>
+    <ns3:bookmark>false</ns3:bookmark>
+    <ns3:owner_id>24</ns3:owner_id>
+    <ns3:group_u_list>_1_</ns3:group_u_list>
+    <ns3:mutableNotes>Varies from -6 to +1 region from original sequence to accomodate BioBricks      suffix.   &lt;p&gt;No secondary structures are formed in the given RBS region. Users should check      for secondary structures induced in the RBS by upstream and downstream elements      in the +50 to -50 region, as such structures will greatly affect the strength      of the RBS.&#13;
+&#13;
+Contact info for this part: &lt;a href="mailto:(bchow@media.mit.edu)"&gt;Brian Chow&lt;/a&gt;</ns3:mutableNotes>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://parts.igem.org/BBa_0002_system/Constraint3">
+    <sbol:displayId>Constraint3</sbol:displayId>
+    <rdf:type rdf:resource="http://sbols.org/v3#Constraint"/>
+    <sbol:restriction rdf:resource="http://sbols.org/v3#contains"/>
+    <sbol:subject rdf:resource="https://parts.igem.org/BBa_0002_system/LocalSubComponent1"/>
+    <sbol:object rdf:resource="https://parts.igem.org/BBa_0002_system/ComponentReference3"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://parts.igem.org/BBa_C0040">
+    <sbol:displayId>BBa_C0040</sbol:displayId>
+    <sbol:name>BBa_C0040_1</sbol:name>
+    <sbol:description>tetracycline repressor from transposon Tn10 (+LVA)</sbol:description>
+    <rdf:type rdf:resource="http://sbols.org/v3#Component"/>
+    <sbol:hasNamespace rdf:resource="https://parts.igem.org/"/>
+    <sbol:type rdf:resource="https://identifiers.org/SBO:0000251"/>
+    <sbol:role rdf:resource="https://identifiers.org/SO:0000316"/>
+    <sbol:hasSequence rdf:resource="https://parts.igem.org/BBa_C0040_seq"/>
+    <ns5:owning_group_id>7</ns5:owning_group_id>
+    <ns5:status>Available</ns5:status>
+    <ns5:dominant>true</ns5:dominant>
+    <ns5:discontinued>false</ns5:discontinued>
+    <ns5:part_status>Released HQ 2013</ns5:part_status>
+    <ns5:sample_status>In stock</ns5:sample_status>
+    <ns5:created>2003-01-31</ns5:created>
+    <ns5:modified>2021-09-08 20:22:44</ns5:modified>
+    <ns5:m_user_id>0</ns5:m_user_id>
+    <ns5:experience>318</ns5:experience>
+    <ns5:bookmark>false</ns5:bookmark>
+    <ns5:owner_id>24</ns5:owner_id>
+    <ns5:group_u_list>_1_</ns5:group_u_list>
+    <ns5:mutableNotes>References (unparsed) here: &lt;p&gt;Elowitz, M. B. Transport, Assembly, and Dynamics in Systems of Interacting      Proteins. Thesis, Princeton Univ., Princeton (1999). &lt;/P&gt; &lt;p&gt; Lutz R, Bujard H., Independent and tight regulation of transcriptional units in Escherichia coli via the LacR/O, the TetR/O and AraC/I1-I2 regulatory elements. Nucleic Acids Res. 1997 Mar 15;25(6):1203-10.   PMID: 9092630 &lt;/p&gt; &lt;P&gt; References (unparsed) here: &lt;p&gt;Elowitz, M. B. Transport, Assembly, and Dynamics in Systems of Interacting      Proteins. Thesis, Princeton Univ., Princeton (1999). &lt;/P&gt; &lt;p&gt; Lutz R, Bujard H., Independent and tight regulation of transcriptional units in Escherichia coli via the LacR/O, the TetR/O and AraC/I1-I2 regulatory elements. Nucleic Acids Res. 1997 Mar 15;25(6):1203-10.   PMID: 9092630 &lt;/p&gt; &lt;P&gt;BBa_C0040 TetR Protein is based on the TetR sequence from Elowitz's repressilator.      It has been modified to include a rapid degradation LVA tail, and includes      the BioBrick standard assembly head and tail restriction sites. The RBS has      been removed. The stop codon has been changed from TAA to a double stop codon      TAATAA.  &lt;P&gt;
+</ns5:mutableNotes>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://parts.igem.org/BBa_0002/Constraint5">
+    <sbol:displayId>Constraint5</sbol:displayId>
+    <rdf:type rdf:resource="http://sbols.org/v3#Constraint"/>
+    <sbol:restriction rdf:resource="http://sbols.org/v3#meets"/>
+    <sbol:subject rdf:resource="https://parts.igem.org/BBa_0002/SubComponent5"/>
+    <sbol:object rdf:resource="https://parts.igem.org/BBa_0002/SubComponent6"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://parts.igem.org/BBa_0002_system/Interaction4/Participation1">
+    <sbol:displayId>Participation1</sbol:displayId>
+    <rdf:type rdf:resource="http://sbols.org/v3#Participation"/>
+    <sbol:role rdf:resource="https://identifiers.org/SBO:0000020"/>
+    <sbol:participant rdf:resource="https://parts.igem.org/BBa_0002_system/ExternallyDefined3"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://parts.igem.org/BBa_0002/SubComponent5">
+    <sbol:displayId>SubComponent5</sbol:displayId>
+    <sbol:name>BBa_R0040_1</sbol:name>
+    <rdf:type rdf:resource="http://sbols.org/v3#SubComponent"/>
+    <sbol:instanceOf rdf:resource="https://parts.igem.org/BBa_R0040"/>
+    <sbol:hasLocation rdf:resource="https://parts.igem.org/BBa_0002/SubComponent5/Range1"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://parts.igem.org/BBa_0002/SubComponent8/Range1">
+    <sbol:displayId>Range1</sbol:displayId>
+    <rdf:type rdf:resource="http://sbols.org/v3#Range"/>
+    <sbol:hasSequence rdf:resource="https://parts.igem.org/BBa_0002_sequence"/>
+    <sbol:start rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1686</sbol:start>
+    <sbol:end rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1814</sbol:end>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://parts.igem.org/BBa_B0015">
+    <sbol:displayId>BBa_B0015</sbol:displayId>
+    <sbol:name>BBa_B0015_1</sbol:name>
+    <sbol:description>double terminator (B0010-B0012)</sbol:description>
+    <rdf:type rdf:resource="http://sbols.org/v3#Component"/>
+    <sbol:hasNamespace rdf:resource="https://parts.igem.org/"/>
+    <sbol:type rdf:resource="https://identifiers.org/SBO:0000251"/>
+    <sbol:role rdf:resource="https://identifiers.org/SO:0000141"/>
+    <sbol:hasSequence rdf:resource="https://parts.igem.org/BBa_B0015_seq"/>
+    <ns4:owning_group_id>7</ns4:owning_group_id>
+    <ns4:status>Available</ns4:status>
+    <ns4:dominant>true</ns4:dominant>
+    <ns4:discontinued>false</ns4:discontinued>
+    <ns4:part_status>Released HQ 2013</ns4:part_status>
+    <ns4:sample_status>In stock</ns4:sample_status>
+    <ns4:created>2003-07-17</ns4:created>
+    <ns4:modified>2021-09-08 20:22:43</ns4:modified>
+    <ns4:m_user_id>0</ns4:m_user_id>
+    <ns4:experience>4772</ns4:experience>
+    <ns4:bookmark>false</ns4:bookmark>
+    <ns4:owner_id>24</ns4:owner_id>
+    <ns4:group_u_list>_1_</ns4:group_u_list>
+    <ns4:mutableNotes>None</ns4:mutableNotes>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://parts.igem.org/BBa_0002_system/Interaction3">
+    <sbol:displayId>Interaction3</sbol:displayId>
+    <rdf:type rdf:resource="http://sbols.org/v3#Interaction"/>
+    <sbol:type rdf:resource="https://identifiers.org/SBO:0000169"/>
+    <sbol:hasParticipation rdf:resource="https://parts.igem.org/BBa_0002_system/Interaction3/Participation1"/>
+    <sbol:hasParticipation rdf:resource="https://parts.igem.org/BBa_0002_system/Interaction3/Participation2"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://parts.igem.org/BBa_J23101">
+    <sbol:displayId>BBa_J23101</sbol:displayId>
+    <sbol:name>BBa_J23101_1</sbol:name>
+    <sbol:description>constitutive promoter family member</sbol:description>
+    <rdf:type rdf:resource="http://sbols.org/v3#Component"/>
+    <sbol:hasNamespace rdf:resource="https://parts.igem.org/"/>
+    <sbol:type rdf:resource="https://identifiers.org/SBO:0000251"/>
+    <sbol:role rdf:resource="https://identifiers.org/SO:0000167"/>
+    <sbol:hasSequence rdf:resource="https://parts.igem.org/BBa_J23101_seq"/>
+    <ns6:owning_group_id>95</ns6:owning_group_id>
+    <ns6:status>Available</ns6:status>
+    <ns6:dominant>true</ns6:dominant>
+    <ns6:discontinued>false</ns6:discontinued>
+    <ns6:part_status>Released HQ 2013</ns6:part_status>
+    <ns6:sample_status>In stock</ns6:sample_status>
+    <ns6:created>2006-08-04</ns6:created>
+    <ns6:modified>2021-09-08 20:23:15</ns6:modified>
+    <ns6:m_user_id>0</ns6:m_user_id>
+    <ns6:experience>326</ns6:experience>
+    <ns6:bookmark>true</ns6:bookmark>
+    <ns6:owner_id>483</ns6:owner_id>
+    <ns6:group_u_list>_52_</ns6:group_u_list>
+    <ns6:mutableNotes>N/A</ns6:mutableNotes>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://parts.igem.org/BBa_0002_system/Constraint2">
+    <sbol:displayId>Constraint2</sbol:displayId>
+    <rdf:type rdf:resource="http://sbols.org/v3#Constraint"/>
+    <sbol:restriction rdf:resource="http://sbols.org/v3#contains"/>
+    <sbol:subject rdf:resource="https://parts.igem.org/BBa_0002_system/LocalSubComponent1"/>
+    <sbol:object rdf:resource="https://parts.igem.org/BBa_0002_system/ComponentReference2"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://parts.igem.org/BBa_0002_system/Constraint13">
+    <sbol:displayId>Constraint13</sbol:displayId>
+    <rdf:type rdf:resource="http://sbols.org/v3#Constraint"/>
+    <sbol:restriction rdf:resource="http://sbols.org/v3#meets"/>
+    <sbol:subject rdf:resource="https://parts.igem.org/BBa_0002_system/ComponentReference5"/>
+    <sbol:object rdf:resource="https://parts.igem.org/BBa_0002_system/ComponentReference6"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://parts.igem.org/BBa_0002/SubComponent7/Range1">
+    <sbol:displayId>Range1</sbol:displayId>
+    <rdf:type rdf:resource="http://sbols.org/v3#Range"/>
+    <sbol:hasSequence rdf:resource="https://parts.igem.org/BBa_0002_sequence"/>
+    <sbol:start rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">972</sbol:start>
+    <sbol:end rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1677</sbol:end>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://parts.igem.org/BBa_0002_system/Constraint8">
+    <sbol:displayId>Constraint8</sbol:displayId>
+    <rdf:type rdf:resource="http://sbols.org/v3#Constraint"/>
+    <sbol:restriction rdf:resource="http://sbols.org/v3#meets"/>
+    <sbol:subject rdf:resource="https://parts.igem.org/BBa_0002_system/ComponentReference3"/>
+    <sbol:object rdf:resource="https://parts.igem.org/BBa_0002_system/ComponentReference4"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://parts.igem.org/BBa_0002_system/Interaction2/Participation3">
+    <sbol:displayId>Participation3</sbol:displayId>
+    <rdf:type rdf:resource="http://sbols.org/v3#Participation"/>
+    <sbol:role rdf:resource="https://identifiers.org/SBO:0000645"/>
+    <sbol:participant rdf:resource="https://parts.igem.org/BBa_0002_system/ComponentReference7"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://parts.igem.org/BBa_0002/SubComponent4/Range1">
+    <sbol:displayId>Range1</sbol:displayId>
+    <rdf:type rdf:resource="http://sbols.org/v3#Range"/>
+    <sbol:hasSequence rdf:resource="https://parts.igem.org/BBa_0002_sequence"/>
+    <sbol:start rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">755</sbol:start>
+    <sbol:end rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">883</sbol:end>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://parts.igem.org/BBa_0002_system/Interaction4">
+    <sbol:displayId>Interaction4</sbol:displayId>
+    <rdf:type rdf:resource="http://sbols.org/v3#Interaction"/>
+    <sbol:type rdf:resource="https://identifiers.org/SBO:0000169"/>
+    <sbol:hasParticipation rdf:resource="https://parts.igem.org/BBa_0002_system/Interaction4/Participation1"/>
+    <sbol:hasParticipation rdf:resource="https://parts.igem.org/BBa_0002_system/Interaction4/Participation2"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://parts.igem.org/BBa_0002/SubComponent1/Range1">
+    <sbol:displayId>Range1</sbol:displayId>
+    <rdf:type rdf:resource="http://sbols.org/v3#Range"/>
+    <sbol:hasSequence rdf:resource="https://parts.igem.org/BBa_0002_sequence"/>
+    <sbol:start rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sbol:start>
+    <sbol:end rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">35</sbol:end>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://parts.igem.org/BBa_B0015_seq">
+    <sbol:displayId>BBa_B0015_seq</sbol:displayId>
+    <rdf:type rdf:resource="http://sbols.org/v3#Sequence"/>
+    <sbol:hasNamespace rdf:resource="https://parts.igem.org/"/>
+    <sbol:elements>ccaggcatcaaataaaacgaaaggctcagtcgaaagactgggcctttcgttttatctgttgtttgtcggtgaacgctctctactagagtcacactggctcaccttcgggtgggcctttctgcgtttata</sbol:elements>
+    <sbol:encoding rdf:resource="https://identifiers.org/edam:format_1207"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://parts.igem.org/BBa_0002_system/Interaction4/Participation2">
+    <sbol:displayId>Participation2</sbol:displayId>
+    <rdf:type rdf:resource="http://sbols.org/v3#Participation"/>
+    <sbol:role rdf:resource="https://identifiers.org/SBO:0000642"/>
+    <sbol:participant rdf:resource="https://parts.igem.org/BBa_0002_system/ExternallyDefined2"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://parts.igem.org/BBa_0002_system/Constraint6">
+    <sbol:displayId>Constraint6</sbol:displayId>
+    <rdf:type rdf:resource="http://sbols.org/v3#Constraint"/>
+    <sbol:restriction rdf:resource="http://sbols.org/v3#meets"/>
+    <sbol:subject rdf:resource="https://parts.igem.org/BBa_0002_system/ComponentReference1"/>
+    <sbol:object rdf:resource="https://parts.igem.org/BBa_0002_system/ComponentReference2"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://parts.igem.org/BBa_0002_system/Constraint15">
+    <sbol:displayId>Constraint15</sbol:displayId>
+    <rdf:type rdf:resource="http://sbols.org/v3#Constraint"/>
+    <sbol:restriction rdf:resource="http://sbols.org/v3#meets"/>
+    <sbol:subject rdf:resource="https://parts.igem.org/BBa_0002_system/ComponentReference7"/>
+    <sbol:object rdf:resource="https://parts.igem.org/BBa_0002_system/ComponentReference8"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://parts.igem.org/BBa_0002_system/Constraint1">
+    <sbol:displayId>Constraint1</sbol:displayId>
+    <rdf:type rdf:resource="http://sbols.org/v3#Constraint"/>
+    <sbol:restriction rdf:resource="http://sbols.org/v3#contains"/>
+    <sbol:subject rdf:resource="https://parts.igem.org/BBa_0002_system/LocalSubComponent1"/>
+    <sbol:object rdf:resource="https://parts.igem.org/BBa_0002_system/ComponentReference1"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://parts.igem.org/BBa_0002_system/Constraint14">
+    <sbol:displayId>Constraint14</sbol:displayId>
+    <rdf:type rdf:resource="http://sbols.org/v3#Constraint"/>
+    <sbol:restriction rdf:resource="http://sbols.org/v3#meets"/>
+    <sbol:subject rdf:resource="https://parts.igem.org/BBa_0002_system/ComponentReference6"/>
+    <sbol:object rdf:resource="https://parts.igem.org/BBa_0002_system/ComponentReference7"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://parts.igem.org/BBa_0002/SubComponent6">
+    <sbol:displayId>SubComponent6</sbol:displayId>
+    <sbol:name>BBa_B0034_2</sbol:name>
+    <rdf:type rdf:resource="http://sbols.org/v3#SubComponent"/>
+    <sbol:instanceOf rdf:resource="https://parts.igem.org/BBa_B0034"/>
+    <sbol:hasLocation rdf:resource="https://parts.igem.org/BBa_0002/SubComponent6/Range1"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://parts.igem.org/BBa_0002_system/Constraint11">
+    <sbol:displayId>Constraint11</sbol:displayId>
+    <rdf:type rdf:resource="http://sbols.org/v3#Constraint"/>
+    <sbol:restriction rdf:resource="http://sbols.org/v3#contains"/>
+    <sbol:subject rdf:resource="https://parts.igem.org/BBa_0002_system/LocalSubComponent3"/>
+    <sbol:object rdf:resource="https://parts.igem.org/BBa_0002_system/ComponentReference7"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://parts.igem.org/BBa_0002/Constraint2">
+    <sbol:displayId>Constraint2</sbol:displayId>
+    <rdf:type rdf:resource="http://sbols.org/v3#Constraint"/>
+    <sbol:restriction rdf:resource="http://sbols.org/v3#meets"/>
+    <sbol:subject rdf:resource="https://parts.igem.org/BBa_0002/SubComponent2"/>
+    <sbol:object rdf:resource="https://parts.igem.org/BBa_0002/SubComponent3"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://parts.igem.org/BBa_0002_system/ComponentReference4">
+    <sbol:displayId>ComponentReference4</sbol:displayId>
+    <rdf:type rdf:resource="http://sbols.org/v3#ComponentReference"/>
+    <sbol:inChildOf rdf:resource="https://parts.igem.org/BBa_0002_system/SubComponent1"/>
+    <sbol:refersTo rdf:resource="https://parts.igem.org/BBa_0002/SubComponent4"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://parts.igem.org/BBa_0002/SubComponent6/Range1">
+    <sbol:displayId>Range1</sbol:displayId>
+    <rdf:type rdf:resource="http://sbols.org/v3#Range"/>
+    <sbol:hasSequence rdf:resource="https://parts.igem.org/BBa_0002_sequence"/>
+    <sbol:start rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">954</sbol:start>
+    <sbol:end rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">965</sbol:end>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://parts.igem.org/BBa_0002_system/Constraint4">
+    <sbol:displayId>Constraint4</sbol:displayId>
+    <rdf:type rdf:resource="http://sbols.org/v3#Constraint"/>
+    <sbol:restriction rdf:resource="http://sbols.org/v3#contains"/>
+    <sbol:subject rdf:resource="https://parts.igem.org/BBa_0002_system/LocalSubComponent1"/>
+    <sbol:object rdf:resource="https://parts.igem.org/BBa_0002_system/ComponentReference4"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://parts.igem.org/BBa_0002_system/Constraint10">
+    <sbol:displayId>Constraint10</sbol:displayId>
+    <rdf:type rdf:resource="http://sbols.org/v3#Constraint"/>
+    <sbol:restriction rdf:resource="http://sbols.org/v3#contains"/>
+    <sbol:subject rdf:resource="https://parts.igem.org/BBa_0002_system/LocalSubComponent3"/>
+    <sbol:object rdf:resource="https://parts.igem.org/BBa_0002_system/ComponentReference6"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://parts.igem.org/BBa_0002_system/ComponentReference8">
+    <sbol:displayId>ComponentReference8</sbol:displayId>
+    <rdf:type rdf:resource="http://sbols.org/v3#ComponentReference"/>
+    <sbol:inChildOf rdf:resource="https://parts.igem.org/BBa_0002_system/SubComponent1"/>
+    <sbol:refersTo rdf:resource="https://parts.igem.org/BBa_0002/SubComponent8"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://parts.igem.org/BBa_0002/SubComponent3/Range1">
+    <sbol:displayId>Range1</sbol:displayId>
+    <rdf:type rdf:resource="http://sbols.org/v3#Range"/>
+    <sbol:hasSequence rdf:resource="https://parts.igem.org/BBa_0002_sequence"/>
+    <sbol:start rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">62</sbol:start>
+    <sbol:end rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">746</sbol:end>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://parts.igem.org/BBa_0002/SubComponent1">
+    <sbol:displayId>SubComponent1</sbol:displayId>
+    <sbol:name>BBa_J23101_1</sbol:name>
+    <rdf:type rdf:resource="http://sbols.org/v3#SubComponent"/>
+    <sbol:instanceOf rdf:resource="https://parts.igem.org/BBa_J23101"/>
+    <sbol:hasLocation rdf:resource="https://parts.igem.org/BBa_0002/SubComponent1/Range1"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://parts.igem.org/BBa_0002/SubComponent8">
+    <sbol:displayId>SubComponent8</sbol:displayId>
+    <sbol:name>BBa_B0015_2</sbol:name>
+    <rdf:type rdf:resource="http://sbols.org/v3#SubComponent"/>
+    <sbol:instanceOf rdf:resource="https://parts.igem.org/BBa_B0015"/>
+    <sbol:hasLocation rdf:resource="https://parts.igem.org/BBa_0002/SubComponent8/Range1"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://parts.igem.org/BBa_0002_system/SubComponent1">
+    <sbol:displayId>SubComponent1</sbol:displayId>
+    <rdf:type rdf:resource="http://sbols.org/v3#SubComponent"/>
+    <sbol:instanceOf rdf:resource="https://parts.igem.org/BBa_0002"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://parts.igem.org/BBa_0002_system/ComponentReference3">
+    <sbol:displayId>ComponentReference3</sbol:displayId>
+    <rdf:type rdf:resource="http://sbols.org/v3#ComponentReference"/>
+    <sbol:inChildOf rdf:resource="https://parts.igem.org/BBa_0002_system/SubComponent1"/>
+    <sbol:refersTo rdf:resource="https://parts.igem.org/BBa_0002/SubComponent3"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://parts.igem.org/BBa_0002_system/Interaction1/Participation2">
+    <sbol:displayId>Participation2</sbol:displayId>
+    <rdf:type rdf:resource="http://sbols.org/v3#Participation"/>
+    <sbol:role rdf:resource="https://identifiers.org/SBO:0000598"/>
+    <sbol:participant rdf:resource="https://parts.igem.org/BBa_0002_system/ComponentReference1"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://parts.igem.org/BBa_0002/SubComponent4">
+    <sbol:displayId>SubComponent4</sbol:displayId>
+    <sbol:name>BBa_B0015_1</sbol:name>
+    <rdf:type rdf:resource="http://sbols.org/v3#SubComponent"/>
+    <sbol:instanceOf rdf:resource="https://parts.igem.org/BBa_B0015"/>
+    <sbol:hasLocation rdf:resource="https://parts.igem.org/BBa_0002/SubComponent4/Range1"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://parts.igem.org/BBa_0002/Constraint4">
+    <sbol:displayId>Constraint4</sbol:displayId>
+    <rdf:type rdf:resource="http://sbols.org/v3#Constraint"/>
+    <sbol:restriction rdf:resource="http://sbols.org/v3#meets"/>
+    <sbol:subject rdf:resource="https://parts.igem.org/BBa_0002/SubComponent4"/>
+    <sbol:object rdf:resource="https://parts.igem.org/BBa_0002/SubComponent5"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://parts.igem.org/BBa_0002_system/Interaction1/Participation1">
+    <sbol:displayId>Participation1</sbol:displayId>
+    <rdf:type rdf:resource="http://sbols.org/v3#Participation"/>
+    <sbol:role rdf:resource="https://identifiers.org/SBO:0000011"/>
+    <sbol:participant rdf:resource="https://parts.igem.org/BBa_0002_system/ExternallyDefined2"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://parts.igem.org/BBa_0002/Constraint6">
+    <sbol:displayId>Constraint6</sbol:displayId>
+    <rdf:type rdf:resource="http://sbols.org/v3#Constraint"/>
+    <sbol:restriction rdf:resource="http://sbols.org/v3#meets"/>
+    <sbol:subject rdf:resource="https://parts.igem.org/BBa_0002/SubComponent6"/>
+    <sbol:object rdf:resource="https://parts.igem.org/BBa_0002/SubComponent7"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://parts.igem.org/BBa_R0040_seq">
+    <sbol:displayId>BBa_R0040_seq</sbol:displayId>
+    <rdf:type rdf:resource="http://sbols.org/v3#Sequence"/>
+    <sbol:hasNamespace rdf:resource="https://parts.igem.org/"/>
+    <sbol:elements>tccctatcagtgatagagattgacatccctatcagtgatagagatactgagcac</sbol:elements>
+    <sbol:encoding rdf:resource="https://identifiers.org/edam:format_1207"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://parts.igem.org/BBa_0002_system/LocalSubComponent1">
+    <sbol:displayId>LocalSubComponent1</sbol:displayId>
+    <sbol:name>TetROperon</sbol:name>
+    <rdf:type rdf:resource="http://sbols.org/v3#LocalSubComponent"/>
+    <sbol:role rdf:resource="https://identifiers.org/SO:0000804"/>
+    <sbol:type rdf:resource="https://identifiers.org/SBO:0000251"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://parts.igem.org/BBa_0002_system/Constraint7">
+    <sbol:displayId>Constraint7</sbol:displayId>
+    <rdf:type rdf:resource="http://sbols.org/v3#Constraint"/>
+    <sbol:restriction rdf:resource="http://sbols.org/v3#meets"/>
+    <sbol:subject rdf:resource="https://parts.igem.org/BBa_0002_system/ComponentReference2"/>
+    <sbol:object rdf:resource="https://parts.igem.org/BBa_0002_system/ComponentReference3"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://parts.igem.org/BBa_0002_sequence">
+    <sbol:displayId>BBa_0002_sequence</sbol:displayId>
+    <rdf:type rdf:resource="http://sbols.org/v3#Sequence"/>
+    <sbol:hasNamespace rdf:resource="https://parts.igem.org/"/>
+    <sbol:elements>tttacagctagctcagtcctaggtattatgctagctactagagaaagaggagaaatactagatgtccagattagataaaagtaaagtgattaacagcgcattagagctgcttaatgaggtcggaatcgaaggtttaacaacccgtaaactcgcccagaagctaggtgtagagcagcctacattgtattggcatgtaaaaaataagcgggctttgctcgacgccttagccattgagatgttagataggcaccatactcacttttgccctttagaaggggaaagctggcaagattttttacgtaataacgctaaaagttttagatgtgctttactaagtcatcgcgatggagcaaaagtacatttaggtacacggcctacagaaaaacagtatgaaactctcgaaaatcaattagcctttttatgccaacaaggtttttcactagagaatgcattatatgcactcagcgctgtggggcattttactttaggttgcgtattggaagatcaagagcatcaagtcgctaaagaagaaagggaaacacctactactgatagtatgccgccattattacgacaagctatcgaattatttgatcaccaaggtgcagagccagccttcttattcggccttgaattgatcatatgcggattagaaaaacaacttaaatgtgaaagtgggtccgctgcaaacgacgaaaactacgctttagtagcttaataacactgatagtgctagtgtagatcactactagagccaggcatcaaataaaacgaaaggctcagtcgaaagactgggcctttcgttttatctgttgtttgtcggtgaacgctctctactagagtcacactggctcaccttcgggtgggcctttctgcgtttatatactagagtccctatcagtgatagagattgacatccctatcagtgatagagatactgagcactactagagaaagaggagaaatactagatggcttcctccgaagacgttatcaaagagttcatgcgtttcaaagttcgtatggaaggttccgttaacggtcacgagttcgaaatcgaaggtgaaggtgaaggtcgtccgtacgaaggtacccagaccgctaaactgaaagttaccaaaggtggtccgctgccgttcgcttgggacatcctgtccccgcagttccagtacggttccaaagcttacgttaaacacccggctgacatcccggactacctgaaactgtccttcccggaaggtttcaaatgggaacgtgttatgaacttcgaagacggtggtgttgttaccgttacccaggactcctccctgcaagacggtgagttcatctacaaagttaaactgcgtggtaccaacttcccgtccgacggtccggttatgcagaaaaaaaccatgggttgggaagcttccaccgaacgtatgtacccggaagacggtgctctgaaaggtgaaatcaaaatgcgtctgaaactgaaagacggtggtcactacgacgctgaagttaaaaccacctacatggctaaaaaaccggttcagctgccgggtgcttacaaaaccgacatcaaactggacatcacctcccacaacgaagactacaccatcgttgaacagtacgaacgtgctgaaggtcgtcactccaccggtgcttaataacgctgatagtgctagtgtagatcgctactagagccaggcatcaaataaaacgaaaggctcagtcgaaagactgggcctttcgttttatctgttgtttgtcggtgaacgctctctactagagtcacactggctcaccttcgggtgggcctttctgcgtttata</sbol:elements>
+    <sbol:encoding rdf:resource="https://identifiers.org/edam:format_1207"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://parts.igem.org/BBa_0002_system/Interaction1/Participation3">
+    <sbol:displayId>Participation3</sbol:displayId>
+    <rdf:type rdf:resource="http://sbols.org/v3#Participation"/>
+    <sbol:role rdf:resource="https://identifiers.org/SBO:0000645"/>
+    <sbol:participant rdf:resource="https://parts.igem.org/BBa_0002_system/ComponentReference3"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://parts.igem.org/BBa_0002_system/Interaction1">
+    <sbol:displayId>Interaction1</sbol:displayId>
+    <rdf:type rdf:resource="http://sbols.org/v3#Interaction"/>
+    <sbol:type rdf:resource="https://identifiers.org/SBO:0000589"/>
+    <sbol:hasParticipation rdf:resource="https://parts.igem.org/BBa_0002_system/Interaction1/Participation1"/>
+    <sbol:hasParticipation rdf:resource="https://parts.igem.org/BBa_0002_system/Interaction1/Participation2"/>
+    <sbol:hasParticipation rdf:resource="https://parts.igem.org/BBa_0002_system/Interaction1/Participation3"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://parts.igem.org/BBa_0002_system/ComponentReference5">
+    <sbol:displayId>ComponentReference5</sbol:displayId>
+    <rdf:type rdf:resource="http://sbols.org/v3#ComponentReference"/>
+    <sbol:inChildOf rdf:resource="https://parts.igem.org/BBa_0002_system/SubComponent1"/>
+    <sbol:refersTo rdf:resource="https://parts.igem.org/BBa_0002/SubComponent5"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://parts.igem.org/BBa_0002_system/Interaction3/Participation2">
+    <sbol:displayId>Participation2</sbol:displayId>
+    <rdf:type rdf:resource="http://sbols.org/v3#Participation"/>
+    <sbol:role rdf:resource="https://identifiers.org/SBO:0000642"/>
+    <sbol:participant rdf:resource="https://parts.igem.org/BBa_0002_system/ComponentReference5"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://parts.igem.org/BBa_0002_system/ExternallyDefined2">
+    <sbol:displayId>ExternallyDefined2</sbol:displayId>
+    <sbol:name>TetR</sbol:name>
+    <rdf:type rdf:resource="http://sbols.org/v3#ExternallyDefined"/>
+    <sbol:role rdf:resource="http://identifiers.org/GO:0003700"/>
+    <sbol:type rdf:resource="https://identifiers.org/SBO:0000252"/>
+    <sbol:definition rdf:resource="https://www.uniprot.org/uniprotkb/P04483/entry"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://parts.igem.org/BBa_0002_system/Interaction3/Participation1">
+    <sbol:displayId>Participation1</sbol:displayId>
+    <rdf:type rdf:resource="http://sbols.org/v3#Participation"/>
+    <sbol:role rdf:resource="https://identifiers.org/SBO:0000020"/>
+    <sbol:participant rdf:resource="https://parts.igem.org/BBa_0002_system/ExternallyDefined2"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://parts.igem.org/BBa_0002_system/ExternallyDefined3">
+    <sbol:displayId>ExternallyDefined3</sbol:displayId>
+    <sbol:name>aTc</sbol:name>
+    <rdf:type rdf:resource="http://sbols.org/v3#ExternallyDefined"/>
+    <sbol:type rdf:resource="https://identifiers.org/SBO:0000247"/>
+    <sbol:definition rdf:resource="https://pubchem.ncbi.nlm.nih.gov/compound/Anhydrotetracycline"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://parts.igem.org/BBa_E1010_seq">
+    <sbol:displayId>BBa_E1010_seq</sbol:displayId>
+    <rdf:type rdf:resource="http://sbols.org/v3#Sequence"/>
+    <sbol:hasNamespace rdf:resource="https://parts.igem.org/"/>
+    <sbol:elements>atggcttcctccgaagacgttatcaaagagttcatgcgtttcaaagttcgtatggaaggttccgttaacggtcacgagttcgaaatcgaaggtgaaggtgaaggtcgtccgtacgaaggtacccagaccgctaaactgaaagttaccaaaggtggtccgctgccgttcgcttgggacatcctgtccccgcagttccagtacggttccaaagcttacgttaaacacccggctgacatcccggactacctgaaactgtccttcccggaaggtttcaaatgggaacgtgttatgaacttcgaagacggtggtgttgttaccgttacccaggactcctccctgcaagacggtgagttcatctacaaagttaaactgcgtggtaccaacttcccgtccgacggtccggttatgcagaaaaaaaccatgggttgggaagcttccaccgaacgtatgtacccggaagacggtgctctgaaaggtgaaatcaaaatgcgtctgaaactgaaagacggtggtcactacgacgctgaagttaaaaccacctacatggctaaaaaaccggttcagctgccgggtgcttacaaaaccgacatcaaactggacatcacctcccacaacgaagactacaccatcgttgaacagtacgaacgtgctgaaggtcgtcactccaccggtgcttaataacgctgatagtgctagtgtagatcgc</sbol:elements>
+    <sbol:encoding rdf:resource="https://identifiers.org/edam:format_1207"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://parts.igem.org/BBa_0002_system/ComponentReference2">
+    <sbol:displayId>ComponentReference2</sbol:displayId>
+    <rdf:type rdf:resource="http://sbols.org/v3#ComponentReference"/>
+    <sbol:inChildOf rdf:resource="https://parts.igem.org/BBa_0002_system/SubComponent1"/>
+    <sbol:refersTo rdf:resource="https://parts.igem.org/BBa_0002/SubComponent2"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://parts.igem.org/BBa_0002/SubComponent3">
+    <sbol:displayId>SubComponent3</sbol:displayId>
+    <sbol:name>BBa_C0040_1</sbol:name>
+    <rdf:type rdf:resource="http://sbols.org/v3#SubComponent"/>
+    <sbol:instanceOf rdf:resource="https://parts.igem.org/BBa_C0040"/>
+    <sbol:hasLocation rdf:resource="https://parts.igem.org/BBa_0002/SubComponent3/Range1"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://parts.igem.org/BBa_0002_system/LocalSubComponent2">
+    <sbol:displayId>LocalSubComponent2</sbol:displayId>
+    <rdf:type rdf:resource="http://sbols.org/v3#LocalSubComponent"/>
+    <sbol:role rdf:resource="https://identifiers.org/SO:0002050"/>
+    <sbol:type rdf:resource="https://identifiers.org/SBO:0000251"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://parts.igem.org/BBa_0002_system/Interaction2">
+    <sbol:displayId>Interaction2</sbol:displayId>
+    <rdf:type rdf:resource="http://sbols.org/v3#Interaction"/>
+    <sbol:type rdf:resource="https://identifiers.org/SBO:0000589"/>
+    <sbol:hasParticipation rdf:resource="https://parts.igem.org/BBa_0002_system/Interaction2/Participation1"/>
+    <sbol:hasParticipation rdf:resource="https://parts.igem.org/BBa_0002_system/Interaction2/Participation2"/>
+    <sbol:hasParticipation rdf:resource="https://parts.igem.org/BBa_0002_system/Interaction2/Participation3"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://parts.igem.org/BBa_0002_system/Constraint5">
+    <sbol:displayId>Constraint5</sbol:displayId>
+    <rdf:type rdf:resource="http://sbols.org/v3#Constraint"/>
+    <sbol:restriction rdf:resource="http://sbols.org/v3#meets"/>
+    <sbol:subject rdf:resource="https://parts.igem.org/BBa_0002_system/LocalSubComponent2"/>
+    <sbol:object rdf:resource="https://parts.igem.org/BBa_0002_system/LocalSubComponent1"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://parts.igem.org/BBa_0002/Constraint3">
+    <sbol:displayId>Constraint3</sbol:displayId>
+    <rdf:type rdf:resource="http://sbols.org/v3#Constraint"/>
+    <sbol:restriction rdf:resource="http://sbols.org/v3#meets"/>
+    <sbol:subject rdf:resource="https://parts.igem.org/BBa_0002/SubComponent3"/>
+    <sbol:object rdf:resource="https://parts.igem.org/BBa_0002/SubComponent4"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://parts.igem.org/BBa_0002_system/Interaction2/Participation2">
+    <sbol:displayId>Participation2</sbol:displayId>
+    <rdf:type rdf:resource="http://sbols.org/v3#Participation"/>
+    <sbol:role rdf:resource="https://identifiers.org/SBO:0000598"/>
+    <sbol:participant rdf:resource="https://parts.igem.org/BBa_0002_system/ComponentReference5"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://parts.igem.org/BBa_0002/SubComponent2/Range1">
+    <sbol:displayId>Range1</sbol:displayId>
+    <rdf:type rdf:resource="http://sbols.org/v3#Range"/>
+    <sbol:hasSequence rdf:resource="https://parts.igem.org/BBa_0002_sequence"/>
+    <sbol:start rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">44</sbol:start>
+    <sbol:end rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">55</sbol:end>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://parts.igem.org/BBa_0002_system/ComponentReference1">
+    <sbol:displayId>ComponentReference1</sbol:displayId>
+    <rdf:type rdf:resource="http://sbols.org/v3#ComponentReference"/>
+    <sbol:inChildOf rdf:resource="https://parts.igem.org/BBa_0002_system/SubComponent1"/>
+    <sbol:refersTo rdf:resource="https://parts.igem.org/BBa_0002/SubComponent1"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://parts.igem.org/BBa_0002/Constraint1">
+    <sbol:displayId>Constraint1</sbol:displayId>
+    <rdf:type rdf:resource="http://sbols.org/v3#Constraint"/>
+    <sbol:restriction rdf:resource="http://sbols.org/v3#meets"/>
+    <sbol:subject rdf:resource="https://parts.igem.org/BBa_0002/SubComponent1"/>
+    <sbol:object rdf:resource="https://parts.igem.org/BBa_0002/SubComponent2"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://parts.igem.org/BBa_B0034_seq">
+    <sbol:displayId>BBa_B0034_seq</sbol:displayId>
+    <rdf:type rdf:resource="http://sbols.org/v3#Sequence"/>
+    <sbol:hasNamespace rdf:resource="https://parts.igem.org/"/>
+    <sbol:elements>aaagaggagaaa</sbol:elements>
+    <sbol:encoding rdf:resource="https://identifiers.org/edam:format_1207"/>
+  </rdf:Description>
+</rdf:RDF>

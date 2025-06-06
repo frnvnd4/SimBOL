@@ -1,0 +1,65 @@
+include gro
+
+// Global Simulation Parameters
+set ("dt", 0.1 ); // Timestep in minutes
+set ("population_max", 20000 ); // Maximum cell population
+
+// Signal Diffusion Parameters
+set("signals", 1.0); // Enable signal module
+set("signals_draw", 1.0); // Enable signal drawing
+grid("continuous", "gro_original", 10, 10, 8); // Grid (type, diffusion_method, length, cell_size, neighborhood_depth)
+
+// Signal Definitions (kdiff = diffusion rate, kdeg = degradation rate)
+aTc := s_signal([kdiff := 0.403, kdeg := 0.001]);
+
+// Gene Definitions
+genes([
+  name := "Operon_1",
+  proteins := {"BBa_E1010"},
+  promoter := [function := "YES",
+    transcription_factors := {"QS_aTc"},
+    noise := [toOn := 0.0, toOff := 0.0, noise_time := 100.0]
+  ],
+  prot_act_times := [times := {0.0}, variabilities := {0.0}],
+  prot_deg_times := [times := {0.0}, variabilities := {0.0}]
+]);
+
+genes([
+  name := "Operon_2",
+  proteins := {"BBa_C0040"},
+  promoter := [function := "TRUE",
+    transcription_factors := {},
+    noise := [toOn := 0.12, toOff := 0.17, noise_time := 100.0]
+  ],
+  prot_act_times := [times := {15.0}, variabilities := {1.0}],
+  prot_deg_times := [times := {20.0}, variabilities := {1.0}]
+]);
+
+// Plasmid Definitions
+plasmids_genes([ p1 := {"Operon_1", "Operon_2"} ]);
+
+// Quorum Sensing Signal Detection Actions
+action({}, "s_get_QS", {tostring(aTc), ">", "0.3", "QS_aTc"});
+
+// Cell Painting Actions (based on protein presence)
+action({"BBa_E1010"}, "paint", {"0", "132", "0", "0"});
+action({"-BBa_E1010"}, "paint", {"0", "-99", "0", "0"});
+
+program p() := {
+  skip();
+};
+
+program main() := {
+  set("ecoli_growth_rate", 0.03465735902799726);
+
+  s_set_signal(aTc, 15.0, 0.0, 0.0); // Initial one-time placement
+
+  // Constant Signal Emissions (every timestep from specified points)
+  true:
+  {
+    s_set_signal(aTc, 3.0, 0.0, 0.0); // Constant emission from this point
+  }
+
+  // Initial Cell Population(s) Setup
+  c_ecolis(100, 0.0, 0.0, 100.0, {"p1"}, program p());
+};

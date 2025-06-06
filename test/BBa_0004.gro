@@ -1,0 +1,48 @@
+include gro
+
+// Global Simulation Parameters
+set ("dt", 0.1 ); // Timestep in minutes
+set ("population_max", 20000 ); // Maximum cell population
+
+// Signal Diffusion Parameters
+set("signals", 1.0); // Enable signal module
+set("signals_draw", 1.0); // Enable signal drawing
+grid("continuous", "gro_original", 10, 10, 8); // Grid (type, diffusion_method, length, cell_size, neighborhood_depth)
+
+// Signal Definitions (kdiff = diffusion rate, kdeg = degradation rate)
+IPTG := s_signal([kdiff := 0.4, kdeg := 0.0001]);
+
+// Gene Definitions
+genes([
+  name := "Operon_1",
+  proteins := {"BBa_C0012", "BBa_E0040"},
+  promoter := [function := "OR",
+    transcription_factors := {"-BBa_C0012", "QS_IPTG"},
+    noise := [toOn := 0.0, toOff := 0.0, noise_time := 100.0]
+  ],
+  prot_act_times := [times := {20.0, 15.0}, variabilities := {3.0, 2.0}],
+  prot_deg_times := [times := {20.0, 20.0}, variabilities := {3.0, 3.0}]
+]);
+
+// Plasmid Definitions
+plasmids_genes([ p1 := {"Operon_1"} ]);
+
+// Quorum Sensing Signal Detection Actions
+action({}, "s_get_QS", {tostring(IPTG), ">", "0.5", "QS_IPTG"});
+
+// Cell Painting Actions (based on protein presence)
+action({"BBa_E0040"}, "paint", {"197", "0", "0", "0"});
+action({"-BBa_E0040"}, "paint", {"-71", "0", "0", "0"});
+
+program p() := {
+  skip();
+};
+
+program main() := {
+  set("ecoli_growth_rate", 0.03465735902799726);
+
+  s_set_signal(IPTG, 50.0, 0.0, 0.0); // Initial one-time placement
+
+  // Initial Cell Population(s) Setup
+  c_ecolis(150, 0.0, 0.0, 100.0, {"p1"}, program p());
+};

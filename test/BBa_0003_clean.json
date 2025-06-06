@@ -1,0 +1,219 @@
+{
+    "components": [
+        {
+            "displayId": "BBa_J23119",
+            "role": "Promoter",
+            "type": "DNA"
+        },
+        {
+            "displayId": "BBa_0003",
+            "role": "Engineered-Region",
+            "type": "DNA"
+        },
+        {
+            "displayId": "BBa_B0034",
+            "role": "RBS",
+            "type": "DNA"
+        },
+        {
+            "displayId": "BBa_C0062",
+            "role": "CDS",
+            "type": "DNA"
+        },
+        {
+            "displayId": "BBa_0003_system",
+            "role": "Unknown",
+            "type": "Functional Entity"
+        },
+        {
+            "displayId": "BBa_R0062",
+            "role": "Promoter",
+            "type": "DNA"
+        },
+        {
+            "displayId": "BBa_C0061",
+            "role": "CDS",
+            "type": "DNA"
+        },
+        {
+            "displayId": "BBa_J23100",
+            "role": "Promoter",
+            "type": "DNA"
+        },
+        {
+            "displayId": "BBa_B0015",
+            "role": "Terminator",
+            "type": "DNA"
+        },
+        {
+            "displayId": "BBa_E0040",
+            "role": "CDS",
+            "type": "DNA"
+        }
+    ],
+    "ED": [
+        {
+            "displayId": "ExternallyDefined6",
+            "name": "Complex LuxR-AHL",
+            "type": "Simple chemical"
+        },
+        {
+            "displayId": "ExternallyDefined4",
+            "name": "Precursor AHL",
+            "type": "Simple chemical"
+        },
+        {
+            "displayId": "ExternallyDefined2",
+            "name": "LuxR",
+            "type": "Protein"
+        },
+        {
+            "displayId": "ExternallyDefined5",
+            "name": "AHL",
+            "type": "Simple chemical"
+        },
+        {
+            "displayId": "ExternallyDefined3",
+            "name": "GFP",
+            "type": "Protein"
+        },
+        {
+            "displayId": "ExternallyDefined1",
+            "name": "LuxI",
+            "type": "Protein"
+        }
+    ],
+    "hierarchy": {
+        "LuxR Operon": {
+            "components": [
+                "BBa_J23100",
+                "BBa_B0034",
+                "BBa_C0062",
+                "BBa_B0015"
+            ],
+            "constitutive": true
+        },
+        "LuxI Operon": {
+            "components": [
+                "BBa_J23119",
+                "BBa_B0034",
+                "BBa_C0061",
+                "BBa_B0015"
+            ],
+            "constitutive": true
+        },
+        "GFP Operon": {
+            "components": [
+                "BBa_R0062",
+                "BBa_B0034",
+                "BBa_E0040",
+                "BBa_B0015"
+            ],
+            "constitutive": true
+        }
+    },
+    "interactions": [
+        {
+            "type": "Biochemical Reaction",
+            "participants": [
+                {
+                    "role": "Reactant",
+                    "participant": "Precursor AHL"
+                },
+                {
+                    "role": "Product",
+                    "participant": "AHL"
+                },
+                {
+                    "role": "Modifier",
+                    "participant": "LuxI"
+                }
+            ]
+        },
+        {
+            "type": "Genetic Production",
+            "participants": [
+                {
+                    "role": "Product",
+                    "participant": "GFP"
+                },
+                {
+                    "role": "Promoter",
+                    "participant": "BBa_R0062"
+                },
+                {
+                    "role": "Template",
+                    "participant": "BBa_E0040"
+                }
+            ]
+        },
+        {
+            "type": "Non-Covalent Binding",
+            "participants": [
+                {
+                    "role": "Reactant",
+                    "participant": "LuxR"
+                },
+                {
+                    "role": "Reactant",
+                    "participant": "AHL"
+                },
+                {
+                    "role": "Product",
+                    "participant": "Complex LuxR-AHL"
+                }
+            ]
+        },
+        {
+            "type": "Stimulation",
+            "participants": [
+                {
+                    "role": "Stimulator",
+                    "participant": "Complex LuxR-AHL"
+                },
+                {
+                    "role": "Stimulated",
+                    "participant": "BBa_R0062"
+                }
+            ]
+        },
+        {
+            "type": "Genetic Production",
+            "participants": [
+                {
+                    "role": "Product",
+                    "participant": "LuxR"
+                },
+                {
+                    "role": "Promoter",
+                    "participant": "BBa_J23100"
+                },
+                {
+                    "role": "Template",
+                    "participant": "BBa_C0062"
+                }
+            ]
+        },
+        {
+            "type": "Genetic Production",
+            "participants": [
+                {
+                    "role": "Product",
+                    "participant": "LuxI"
+                },
+                {
+                    "role": "Promoter",
+                    "participant": "BBa_J23119"
+                },
+                {
+                    "role": "Template",
+                    "participant": "BBa_C0061"
+                }
+            ]
+        }
+    ],
+    "orientation": [],
+    "equivalence": [],
+    "replacements": [],
+    "spatial_relations": []
+}

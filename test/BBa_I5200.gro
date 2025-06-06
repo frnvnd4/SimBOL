@@ -1,0 +1,68 @@
+include gro
+
+// Global Simulation Parameters
+set ("dt", 0.1 ); // Timestep in minutes
+set ("population_max", 20000 ); // Maximum cell population
+
+// Gene Definitions
+genes([
+  name := "Operon_1",
+  proteins := {"BBa_E0040"},
+  promoter := [function := "NOT",
+    transcription_factors := {"BBa_C0012"},
+    noise := [toOn := 0.0, toOff := 0.0, noise_time := 100.0]
+  ],
+  prot_act_times := [times := {0.0}, variabilities := {0.0}],
+  prot_deg_times := [times := {0.0}, variabilities := {0.0}]
+]);
+
+genes([
+  name := "Operon_2",
+  proteins := {"BBa_C0012"},
+  promoter := [function := "NOT",
+    transcription_factors := {"BBa_C0050"},
+    noise := [toOn := 0.0, toOff := 0.0, noise_time := 100.0]
+  ],
+  prot_act_times := [times := {10.0}, variabilities := {2.0}],
+  prot_deg_times := [times := {2.0}, variabilities := {0.5}]
+]);
+
+genes([
+  name := "Operon_3",
+  proteins := {"BBa_C0040"},
+  promoter := [function := "NOT",
+    transcription_factors := {"BBa_C0012"},
+    noise := [toOn := 0.0, toOff := 0.0, noise_time := 100.0]
+  ],
+  prot_act_times := [times := {36.0}, variabilities := {5.0}],
+  prot_deg_times := [times := {5.0}, variabilities := {1.0}]
+]);
+
+genes([
+  name := "Operon_4",
+  proteins := {"BBa_C0050"},
+  promoter := [function := "NOT",
+    transcription_factors := {"BBa_C0040"},
+    noise := [toOn := 0.0, toOff := 0.0, noise_time := 100.0]
+  ],
+  prot_act_times := [times := {17.0}, variabilities := {1.0}],
+  prot_deg_times := [times := {5.0}, variabilities := {1.0}]
+]);
+
+// Plasmid Definitions
+plasmids_genes([ p1 := {"Operon_1", "Operon_2", "Operon_3", "Operon_4"} ]);
+
+// Cell Painting Actions (based on protein presence)
+action({"BBa_E0040"}, "paint", {"190", "0", "0", "0"});
+action({"-BBa_E0040"}, "paint", {"-65", "0", "0", "0"});
+
+program p() := {
+  skip();
+};
+
+program main() := {
+  set("ecoli_growth_rate", 0.03465735902799726);
+
+  // Initial Cell Population(s) Setup
+  c_ecolis(100, 0.0, 0.0, 100.0, {"p1"}, program p());
+};

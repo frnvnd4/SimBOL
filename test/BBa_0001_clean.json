@@ -1,0 +1,75 @@
+{
+    "components": [
+        {
+            "displayId": "BBa_B0015",
+            "role": "Terminator",
+            "type": "DNA"
+        },
+        {
+            "displayId": "BBa_J23100",
+            "role": "Promoter",
+            "type": "DNA"
+        },
+        {
+            "displayId": "BBa_E0040",
+            "role": "CDS",
+            "type": "DNA"
+        },
+        {
+            "displayId": "BBa_0001_system",
+            "role": "Unknown",
+            "type": "Functional Entity"
+        },
+        {
+            "displayId": "BBa_B0034",
+            "role": "RBS",
+            "type": "DNA"
+        },
+        {
+            "displayId": "BBa_0001",
+            "role": "Engineered-Region",
+            "type": "DNA"
+        }
+    ],
+    "ED": [
+        {
+            "displayId": "ExternallyDefined1",
+            "name": "GFP",
+            "type": "Protein"
+        }
+    ],
+    "hierarchy": {
+        "ReporterGFP": {
+            "components": [
+                "BBa_J23100",
+                "BBa_B0034",
+                "BBa_E0040",
+                "BBa_B0015"
+            ],
+            "constitutive": true
+        }
+    },
+    "interactions": [
+        {
+            "type": "Genetic Production",
+            "participants": [
+                {
+                    "role": "Product",
+                    "participant": "GFP"
+                },
+                {
+                    "role": "Promoter",
+                    "participant": "BBa_J23100"
+                },
+                {
+                    "role": "Template",
+                    "participant": "BBa_E0040"
+                }
+            ]
+        }
+    ],
+    "orientation": [],
+    "equivalence": [],
+    "replacements": [],
+    "spatial_relations": []
+}
