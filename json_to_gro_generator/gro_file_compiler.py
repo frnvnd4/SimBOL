@@ -498,17 +498,26 @@ def extract_genes_and_qs_actions(interactions_list, hierarchy_map, components_li
       element_id_current = flattened_elements_list[i]
       if component_lookup.get(element_id_current, {}).get('role') == 'Promoter':
         promoter_id_current = element_id_current
+        # cds_list_for_this_promoter = [
+        #     elem for elem in flattened_elements_list[i+1:] 
+        #     if component_lookup.get(elem, {}).get('role') == 'CDS'
+        # ]
+        # next_promoter_index = next((idx for idx, elem in enumerate(flattened_elements_list[i+1:]) if component_lookup.get(elem, {}).get('role') == 'Promoter'), -1)
+        # if next_promoter_index != -1:
+        #     cds_list_for_this_promoter = cds_list_for_this_promoter[:next_promoter_index]
+        search_slice = flattened_elements_list[i+1:]
+        next_promoter_index_in_slice = next((idx for idx, elem in enumerate(search_slice) if component_lookup.get(elem, {}).get('role') == 'Promoter'), -1)
+        if next_promoter_index_in_slice != -1:
+            components_in_operon = search_slice[:next_promoter_index_in_slice]
+        else:
+            components_in_operon = search_slice
         cds_list_for_this_promoter = [
-            elem for elem in flattened_elements_list[i+1:] 
+            elem for elem in components_in_operon
             if component_lookup.get(elem, {}).get('role') == 'CDS'
         ]
-        next_promoter_index = next((idx for idx, elem in enumerate(flattened_elements_list[i+1:]) if component_lookup.get(elem, {}).get('role') == 'Promoter'), -1)
-        if next_promoter_index != -1:
-            cds_list_for_this_promoter = cds_list_for_this_promoter[:next_promoter_index]
-
         if cds_list_for_this_promoter:
           gene_groups_by_promoter.append((promoter_id_current, cds_list_for_this_promoter))
-        i += len(cds_list_for_this_promoter)
+        #i += len(cds_list_for_this_promoter)
       i += 1
 
     for promoter_id_val, cds_ids_list in gene_groups_by_promoter:
