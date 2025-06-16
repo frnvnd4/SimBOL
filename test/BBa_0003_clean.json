@@ -109,7 +109,7 @@
                 "BBa_E0040",
                 "BBa_B0015"
             ],
-            "constitutive": true
+            "constitutive": false
         }
     },
     "interactions": [
