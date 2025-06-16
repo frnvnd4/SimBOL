@@ -1,0 +1,92 @@
+include gro
+
+// Global Simulation Parameters
+set ("dt", 0.1 ); // Timestep in minutes
+set ("population_max", 20000 ); // Maximum cell population
+
+// Signal Diffusion Parameters
+set("signals", 1.0); // Enable signal module
+set("signals_draw", 1.0); // Enable signal drawing
+grid("continuous", "gro_original", 10, 10, 8); // Grid (type, diffusion_method, length, cell_size, neighborhood_depth)
+
+// Signal Definitions (kdiff = diffusion rate, kdeg = degradation rate)
+ComplexLuxRAHL := s_signal([kdiff := 0.01, kdeg := 0.094]);
+PrecursorAHL := s_signal([kdiff := 0.15, kdeg := 0.002]);
+AHL := s_signal([kdiff := 0.02, kdeg := 0.0004]);
+
+// Gene Definitions
+genes([
+  name := "Operon_1",
+  proteins := {"BBa_C0062"},
+  promoter := [function := "TRUE",
+    transcription_factors := {},
+    noise := [toOn := 0.0, toOff := 0.0, noise_time := 100.0]
+  ],
+  prot_act_times := [times := {12.0}, variabilities := {1.0}],
+  prot_deg_times := [times := {18.0}, variabilities := {1.0}]
+]);
+
+genes([
+  name := "Operon_2",
+  proteins := {"BBa_C0061"},
+  promoter := [function := "TRUE",
+    transcription_factors := {},
+    noise := [toOn := 0.0, toOff := 0.0, noise_time := 100.0]
+  ],
+  prot_act_times := [times := {8.0}, variabilities := {1.0}],
+  prot_deg_times := [times := {15.0}, variabilities := {1.0}]
+]);
+
+genes([
+  name := "Operon_3",
+  proteins := {"BBa_E0040"},
+  promoter := [function := "YES",
+    transcription_factors := {"QS_ComplexLuxRAHL"},
+    noise := [toOn := 0.0, toOff := 0.0, noise_time := 100.0]
+  ],
+  prot_act_times := [times := {0.0}, variabilities := {0.0}],
+  prot_deg_times := [times := {0.0}, variabilities := {0.0}]
+]);
+
+// Auxiliary gene for Non-Covalent Binding induced emission: Operon_NCB_Emit_ComplexLuxRAHL_1
+genes([
+  name := "Operon_NCB_Emit_ComplexLuxRAHL_1",
+  proteins := {"P_aux_NCB1"},
+  promoter := [function := "AND",
+    transcription_factors := {"QS_AHL", "BBa_C0062"},
+    noise := [toOn := 0.0, toOff := 0.0, noise_time := 0.0]
+  ],
+  prot_act_times := [times := {0.0}, variabilities := {0.0}],
+  prot_deg_times := [times := {0.0}, variabilities := {0.0}]
+]);
+
+// Plasmid Definitions
+plasmids_genes([ p1 := {"Operon_1", "Operon_2", "Operon_3", "Operon_NCB_Emit_ComplexLuxRAHL_1"} ]);
+
+// Quorum Sensing Signal Detection Actions
+action({}, "s_get_QS", {tostring(ComplexLuxRAHL), ">", "0.3", "QS_ComplexLuxRAHL"});
+action({}, "s_get_QS", {tostring(AHL), ">", "0.3", "QS_AHL"});
+
+// Non-Covalent Binding Product Emission Actions
+action({"P_aux_NCB1"}, "s_emit_signal", {tostring(ComplexLuxRAHL), "2.0", "exact"});
+
+// Biochemical Signal Conversion Actions
+action({"BBa_C0061"}, "s_absorb_signal", {tostring(PrecursorAHL), "0.001", "exact"});
+action({"BBa_C0061"}, "s_emit_signal", {tostring(AHL), "0.001", "exact"});
+
+// Cell Painting Actions (based on protein presence)
+action({"BBa_E0040"}, "paint", {"169", "0", "0", "0"});
+action({"-BBa_E0040"}, "paint", {"-90", "0", "0", "0"});
+
+program p() := {
+  skip();
+};
+
+program main() := {
+  set("ecoli_growth_rate", 0.03465735902799726);
+
+  s_set_signal(PrecursorAHL, 3.0, 0.0, 0.0); // Initial one-time placement
+
+  // Initial Cell Population(s) Setup
+  c_ecolis(150, 0.0, 0.0, 100.0, {"p1"}, program p());
+};
